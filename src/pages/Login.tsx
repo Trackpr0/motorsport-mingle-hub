@@ -5,10 +5,10 @@ const Login = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500">
-      <div className="w-full max-w-md space-y-8 p-6 text-center">
-        {/* Logo and Title */}
-        <div className="space-y-2">
+    <div className="min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500">
+      {/* Logo and Title Container - Centered at the top with some padding */}
+      <div className="w-full max-w-md pt-20">
+        <div className="space-y-2 text-center">
           <img
             src="/lovable-uploads/5eac19a8-d91f-4497-a006-e116ef673259.png"
             alt="TrackHub Logo"
@@ -18,22 +18,22 @@ const Login = () => {
             TrackHub
           </h1>
         </div>
+      </div>
 
-        {/* Account Type Selection */}
-        <div className="space-y-4 mt-12 animate-fade-in">
-          <Button
-            onClick={() => navigate("/enthusiast-login")}
-            className="w-full h-14 text-lg bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300 transform hover:scale-105"
-          >
-            Motorsport Enthusiast
-          </Button>
-          <Button
-            onClick={() => navigate("/business-login")}
-            className="w-full h-14 text-lg bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300 transform hover:scale-105"
-          >
-            Motorsport Business
-          </Button>
-        </div>
+      {/* Buttons Container - Positioned towards bottom */}
+      <div className="w-full max-w-md space-y-4 px-6 mt-auto mb-20 animate-fade-in">
+        <Button
+          onClick={() => navigate("/enthusiast-login")}
+          className="w-full h-14 text-lg bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300 transform hover:scale-105"
+        >
+          Motorsport Enthusiast
+        </Button>
+        <Button
+          onClick={() => navigate("/business-login")}
+          className="w-full h-14 text-lg bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300 transform hover:scale-105"
+        >
+          Motorsport Business
+        </Button>
       </div>
     </div>
   );
