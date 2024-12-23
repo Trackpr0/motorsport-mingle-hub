@@ -11,11 +11,11 @@ const Login = () => {
         <div className="space-y-4">
           <img
             src="/lovable-uploads/d5222dc1-5064-40eb-abd5-a7e64b18ac7c.png"
-            alt="TrakHub Logo"
-            className="w-32 h-32 mx-auto animate-fade-in"
+            alt="TrckHub Logo"
+            className="w-48 h-48 mx-auto animate-fade-in object-contain"
           />
           <h1 className="text-4xl font-bold text-white tracking-wider animate-fade-in">
-            TrakHub
+            TrckHub
           </h1>
         </div>
 
