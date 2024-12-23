@@ -10,7 +10,7 @@ const Login = () => {
         {/* Logo and Title */}
         <div className="space-y-2">
           <img
-            src="/lovable-uploads/d5222dc1-5064-40eb-abd5-a7e64b18ac7c.png"
+            src="/lovable-uploads/5eac19a8-d91f-4497-a006-e116ef673259.png"
             alt="TrackHub Logo"
             className="w-[480px] h-[480px] mx-auto animate-fade-in object-contain"
           />
