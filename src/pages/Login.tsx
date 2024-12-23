@@ -8,11 +8,11 @@ const Login = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500">
       <div className="w-full max-w-md space-y-8 p-6 text-center">
         {/* Logo and Title */}
-        <div className="space-y-4">
+        <div className="space-y-2">
           <img
             src="/lovable-uploads/d5222dc1-5064-40eb-abd5-a7e64b18ac7c.png"
             alt="TrackHub Logo"
-            className="w-96 h-96 mx-auto animate-fade-in object-contain"
+            className="w-[480px] h-[480px] mx-auto animate-fade-in object-contain"
           />
           <h1 className="text-4xl font-bold text-white tracking-wider animate-fade-in">
             TrackHub
