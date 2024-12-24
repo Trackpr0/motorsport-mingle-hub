@@ -58,7 +58,7 @@ const EnthusiastLogin = () => {
                 },
               },
             }}
-            providers={[]}
+            providers={["google", "facebook", "twitter"]}
           />
         </div>
       </div>
