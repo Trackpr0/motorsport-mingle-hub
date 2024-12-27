@@ -63,7 +63,7 @@ const Index = () => {
                   <img 
                     src="/lovable-uploads/a86b6920-93c3-43b5-8070-36cd7514b1d1.png" 
                     alt="Tire Rating" 
-                    className="w-6 h-6"
+                    className="w-7 h-7"
                   />
                 </button>
               )}
