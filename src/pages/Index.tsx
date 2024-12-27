@@ -58,12 +58,12 @@ const Index = () => {
                 </div>
               </div>
               {post.type === "business" && (
-                <button className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
-                  <span className="font-semibold text-gray-900">{post.rating}</span>
+                <button className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                  <span className="font-semibold text-gray-900 text-sm">{post.rating}</span>
                   <img 
                     src="/lovable-uploads/a86b6920-93c3-43b5-8070-36cd7514b1d1.png" 
                     alt="Tire Rating" 
-                    className="w-7 h-7"
+                    className="w-5 h-5"
                   />
                 </button>
               )}
