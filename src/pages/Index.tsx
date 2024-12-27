@@ -50,7 +50,7 @@ const Index = () => {
                 <button className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
                   <img src="/placeholder.svg" alt="Profile" className="w-full h-full object-cover" />
                 </button>
-                <div className="flex flex-col">
+                <div className="flex flex-col items-start">
                   <button className="font-semibold text-gray-900 hover:text-gray-700 transition-colors">{post.name}</button>
                   {post.location && (
                     <span className="text-sm text-gray-500">{post.location}</span>
