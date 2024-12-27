@@ -70,9 +70,6 @@ const Index = () => {
             
             {/* Post Content */}
             <div className="p-4 space-y-4">
-              {post.type === "business" && (
-                <button className="text-blue-600 font-medium">See Business Reviews</button>
-              )}
               <p className="text-gray-700">{post.description}</p>
               
               {post.type === "business" && post.hasEvent && (
