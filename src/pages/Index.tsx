@@ -58,10 +58,14 @@ const Index = () => {
                 </div>
               </div>
               {post.type === "business" && (
-                <div className="flex items-center gap-1">
+                <button className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
                   <span className="font-semibold text-gray-900">{post.rating}</span>
-                  <img src="/placeholder.svg" alt="Rating" className="w-5 h-5" />
-                </div>
+                  <img 
+                    src="/lovable-uploads/a86b6920-93c3-43b5-8070-36cd7514b1d1.png" 
+                    alt="Tire Rating" 
+                    className="w-5 h-5"
+                  />
+                </button>
               )}
             </div>
             
