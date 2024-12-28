@@ -57,20 +57,22 @@ const CreateProfile = () => {
         const fileExt = data.avatar.name.split('.').pop();
         const fileName = `${session.user.id}-${Math.random()}.${fileExt}`;
         
-        const { error: uploadError } = await supabase.storage
+        const { error: uploadError, data: uploadData } = await supabase.storage
           .from('profile_pictures')
           .upload(fileName, data.avatar);
 
         if (uploadError) {
+          console.error('Upload error:', uploadError);
           toast.error("Error uploading profile picture");
           return;
         }
 
-        const { data: { publicUrl } } = supabase.storage
-          .from('profile_pictures')
-          .getPublicUrl(fileName);
-
-        avatarPath = publicUrl;
+        if (uploadData) {
+          const { data: { publicUrl } } = supabase.storage
+            .from('profile_pictures')
+            .getPublicUrl(uploadData.path);
+          avatarPath = publicUrl;
+        }
       }
 
       const { error: profileError } = await supabase
@@ -85,6 +87,7 @@ const CreateProfile = () => {
         });
 
       if (profileError) {
+        console.error('Profile error:', profileError);
         toast.error("Error creating profile");
         return;
       }
@@ -92,6 +95,7 @@ const CreateProfile = () => {
       toast.success("Profile created successfully!");
       navigate("/home");
     } catch (error) {
+      console.error('Unexpected error:', error);
       toast.error("An unexpected error occurred");
     } finally {
       setIsLoading(false);
@@ -117,7 +121,7 @@ const CreateProfile = () => {
               className="w-full bg-blue-600 hover:bg-blue-700"
               disabled={isLoading}
             >
-              Continue
+              {isLoading ? "Creating..." : "Continue"}
             </Button>
           </form>
         </Form>
