@@ -1,4 +1,4 @@
-import { Settings, MessageSquare, ChevronRight, User, Stopwatch } from "lucide-react";
+import { Settings, MessageSquare, ChevronRight, User, Timer } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -79,7 +79,7 @@ const Profile = () => {
             <User className="w-5 h-5" />
           </TabsTrigger>
           <TabsTrigger value="laptimes" className="flex-1">
-            <Stopwatch className="w-5 h-5" />
+            <Timer className="w-5 h-5" />
           </TabsTrigger>
         </TabsList>
         <TabsContent value="posts" className="p-4">
@@ -92,7 +92,7 @@ const Profile = () => {
         </TabsContent>
         <TabsContent value="laptimes" className="p-4">
           <div className="flex flex-col items-center justify-center h-48 gap-4">
-            <Stopwatch className="w-12 h-12 text-gray-400" />
+            <Timer className="w-12 h-12 text-gray-400" />
             <Button size="lg" className="rounded-full bg-blue-600 hover:bg-blue-700">
               +
             </Button>
