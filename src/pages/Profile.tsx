@@ -74,10 +74,16 @@ const Profile = () => {
       {/* Tabs */}
       <Tabs defaultValue="posts" className="w-full mt-6">
         <TabsList className="w-full flex justify-around bg-transparent">
-          <TabsTrigger value="posts" className="flex-1">
+          <TabsTrigger 
+            value="posts" 
+            className="flex-1 data-[state=active]:bg-gray-100 transition-colors"
+          >
             <User className="w-5 h-5" />
           </TabsTrigger>
-          <TabsTrigger value="laptimes" className="flex-1">
+          <TabsTrigger 
+            value="laptimes" 
+            className="flex-1 data-[state=active]:bg-gray-100 transition-colors"
+          >
             <Timer className="w-5 h-5" />
           </TabsTrigger>
         </TabsList>
