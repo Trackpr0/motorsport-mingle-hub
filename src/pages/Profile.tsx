@@ -57,11 +57,6 @@ const Profile = () => {
             </Button>
           </div>
           <div className="bg-gray-100 rounded-lg p-4">
-            <img 
-              src="/placeholder.svg" 
-              alt="Primary Vehicle" 
-              className="w-full h-32 object-cover rounded-lg mb-3"
-            />
             <div className="space-y-1">
               <p className="font-medium">Car Make</p>
               <p className="text-sm text-gray-600">Car Model</p>
