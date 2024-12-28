@@ -7,7 +7,6 @@ import FooterNav from "@/components/navigation/FooterNav";
 const Profile = () => {
   return (
     <div className="min-h-screen pb-20 bg-white text-black">
-      {/* Header */}
       <div className="flex justify-between items-center p-4">
         <h1 className="text-2xl font-bold">Profile</h1>
         <div className="flex gap-4">
@@ -57,16 +56,13 @@ const Profile = () => {
             </Button>
           </div>
           <div className="bg-gray-100 rounded-lg p-4">
-            <div className="space-y-1">
-              <p className="font-medium">Car Make</p>
-              <p className="text-sm text-gray-600">Car Model</p>
-              <p className="text-sm text-gray-600">Car Year</p>
+            <div className="flex flex-col items-center justify-center text-gray-400">
+              <p>No primary vehicle selected</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Tabs */}
       <Tabs defaultValue="posts" className="w-full mt-6">
         <TabsList className="w-full flex justify-around bg-transparent">
           <TabsTrigger 
