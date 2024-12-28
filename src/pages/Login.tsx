@@ -12,7 +12,7 @@ const Login = () => {
           <img
             src="/lovable-uploads/5eac19a8-d91f-4497-a006-e116ef673259.png"
             alt="TrackHub Logo"
-            className="w-[480px] h-[480px] mx-auto animate-fade-in object-contain"
+            className="w-[240px] h-[240px] mx-auto animate-fade-in object-contain"
           />
           <h1 className="text-4xl font-bold text-white tracking-wider animate-fade-in">
             TrackHub
