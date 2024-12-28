@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
 import { ProfilePictureUpload } from "@/components/profile/ProfilePictureUpload";
-import { ProfileFormFields } from "@/components/profile/ProfileFormFields";
+import { ProfileFormFields } from "@/components/profile/ProfileForm";
 import { ProfileFormValues } from "@/components/profile/types";
 
 const CreateProfile = () => {
