@@ -18,6 +18,24 @@ export const ProfileFormFields = ({ form }: ProfileFormFieldsProps) => {
     <div className="space-y-6">
       <FormField
         control={form.control}
+        name="username"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel className="text-blue-600">Username</FormLabel>
+            <FormControl>
+              <Input 
+                placeholder="Choose a unique username..." 
+                className="bg-gray-50 border-gray-200" 
+                {...field} 
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
         name="firstName"
         render={({ field }) => (
           <FormItem>

@@ -16,6 +16,7 @@ const CreateProfile = () => {
 
   const form = useForm<ProfileFormValues>({
     defaultValues: {
+      username: "",
       firstName: "",
       lastName: "",
       birthdate: "",
@@ -76,6 +77,7 @@ const CreateProfile = () => {
         .from('enthusiast_profiles')
         .upsert({
           id: session.user.id,
+          username: data.username,
           first_name: data.firstName,
           last_name: data.lastName,
           birthdate: data.birthdate,
