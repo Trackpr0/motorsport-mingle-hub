@@ -11,6 +11,7 @@ export type Database = {
     Tables: {
       enthusiast_profiles: {
         Row: {
+          avatar_url: string | null
           birthdate: string | null
           created_at: string
           first_name: string | null
@@ -21,6 +22,7 @@ export type Database = {
           username: string | null
         }
         Insert: {
+          avatar_url?: string | null
           birthdate?: string | null
           created_at?: string
           first_name?: string | null
@@ -31,6 +33,7 @@ export type Database = {
           username?: string | null
         }
         Update: {
+          avatar_url?: string | null
           birthdate?: string | null
           created_at?: string
           first_name?: string | null

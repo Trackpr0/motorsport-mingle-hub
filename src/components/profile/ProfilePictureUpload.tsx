@@ -21,7 +21,7 @@ export const ProfilePictureUpload = ({
           <User className="w-8 h-8 text-gray-400" />
         </AvatarFallback>
       </Avatar>
-      <span className="text-gray-500">Upload Profile Picture</span>
+      <span className="text-gray-500">Upload Profile Picture (Optional)</span>
       <input
         type="file"
         accept="image/*"

@@ -25,7 +25,7 @@ export const ProfileFormFields = ({ form }: ProfileFormFieldsProps) => {
             <FormControl>
               <Input 
                 placeholder="Choose a unique username..." 
-                className="bg-gray-50 border-gray-200" 
+                className="bg-gray-50 border-gray-200 text-black" 
                 {...field} 
               />
             </FormControl>
@@ -43,7 +43,7 @@ export const ProfileFormFields = ({ form }: ProfileFormFieldsProps) => {
             <FormControl>
               <Input 
                 placeholder="Enter here..." 
-                className="bg-gray-50 border-gray-200" 
+                className="bg-gray-50 border-gray-200 text-black" 
                 {...field} 
               />
             </FormControl>
@@ -61,7 +61,7 @@ export const ProfileFormFields = ({ form }: ProfileFormFieldsProps) => {
             <FormControl>
               <Input 
                 placeholder="Enter here..." 
-                className="bg-gray-50 border-gray-200" 
+                className="bg-gray-50 border-gray-200 text-black" 
                 {...field} 
               />
             </FormControl>
@@ -80,7 +80,7 @@ export const ProfileFormFields = ({ form }: ProfileFormFieldsProps) => {
               <Input
                 type="date"
                 placeholder="Enter here (mm/dd/yyyy)"
-                className="bg-gray-50 border-gray-200"
+                className="bg-gray-50 border-gray-200 text-black"
                 {...field}
               />
             </FormControl>
