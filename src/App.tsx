@@ -15,7 +15,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <div className="bg-black min-h-screen">
+        <div className="min-h-screen bg-white">
           <Toaster />
           <Sonner />
           <BrowserRouter>

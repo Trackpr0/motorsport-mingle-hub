@@ -2,10 +2,11 @@ import { Settings, MessageSquare, ChevronRight, User, Timer } from "lucide-react
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Navigation from "@/components/Navigation";
 
 const Profile = () => {
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 bg-white text-black">
       {/* Header */}
       <div className="flex justify-between items-center p-4">
         <h1 className="text-2xl font-bold">Profile</h1>
@@ -68,7 +69,6 @@ const Profile = () => {
             </div>
           </div>
         </div>
-
       </div>
 
       {/* Tabs */}
@@ -82,11 +82,8 @@ const Profile = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="posts" className="p-4">
-          <div className="grid grid-cols-3 gap-1">
-            {/* Placeholder posts */}
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="aspect-square bg-gray-200 rounded-sm"></div>
-            ))}
+          <div className="flex flex-col items-center justify-center h-48 text-gray-500 font-medium">
+            Go to the Track
           </div>
         </TabsContent>
         <TabsContent value="laptimes" className="p-4">
@@ -98,6 +95,9 @@ const Profile = () => {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Navigation Footer */}
+      <Navigation />
     </div>
   );
 };
