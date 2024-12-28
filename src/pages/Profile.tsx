@@ -2,7 +2,7 @@ import { Settings, MessageSquare, ChevronRight, User, Timer } from "lucide-react
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Navigation from "@/components/Navigation";
+import FooterNav from "@/components/navigation/FooterNav";
 
 const Profile = () => {
   return (
@@ -97,7 +97,7 @@ const Profile = () => {
       </Tabs>
 
       {/* Navigation Footer */}
-      <Navigation />
+      <FooterNav />
     </div>
   );
 };
