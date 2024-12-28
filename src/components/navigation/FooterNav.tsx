@@ -22,10 +22,10 @@ const FooterNav = () => {
           <Search className="w-6 h-6" />
           <span className="text-xs mt-1">Search</span>
         </button>
-        <button className="flex flex-col items-center text-gray-600">
+        <Link to="/profile" className="flex flex-col items-center text-gray-600">
           <User className="w-6 h-6" />
           <span className="text-xs mt-1">Profile</span>
-        </button>
+        </Link>
       </div>
     </nav>
   );
