@@ -35,18 +35,16 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Recognition Badges */}
+        {/* Trophies Section */}
         <div className="space-y-4 mb-6">
-          <div className="flex justify-between items-center">
-            <span className="text-lg">Recognition Badges</span>
+          <Button 
+            variant="ghost" 
+            className="w-full flex justify-between items-center px-0 hover:bg-transparent"
+            onClick={() => {/* Trophy page navigation will be implemented later */}}
+          >
+            <span className="text-lg">Trophies</span>
             <ChevronRight className="w-5 h-5" />
-          </div>
-          <div className="flex gap-2">
-            {/* Placeholder badges */}
-            <div className="w-8 h-8 bg-yellow-500 rounded-full"></div>
-            <div className="w-8 h-8 bg-yellow-500 rounded-full"></div>
-            <div className="w-8 h-8 bg-yellow-500 rounded-full"></div>
-          </div>
+          </Button>
         </div>
 
         {/* Primary Vehicle */}
@@ -70,6 +68,7 @@ const Profile = () => {
             </div>
           </div>
         </div>
+
       </div>
 
       {/* Tabs */}
