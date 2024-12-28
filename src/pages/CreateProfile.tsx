@@ -14,10 +14,13 @@ import {
 } from "@/components/ui/form";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Upload } from "lucide-react";
+import { Calendar, Camera, User } from "lucide-react";
+import { format } from "date-fns";
 
 interface ProfileFormValues {
-  fullName: string;
+  firstName: string;
+  lastName: string;
+  birthdate: string;
   avatar?: File;
 }
 
@@ -28,7 +31,9 @@ const CreateProfile = () => {
 
   const form = useForm<ProfileFormValues>({
     defaultValues: {
-      fullName: "",
+      firstName: "",
+      lastName: "",
+      birthdate: "",
     },
   });
 
@@ -52,14 +57,14 @@ const CreateProfile = () => {
         return;
       }
 
-      let finalAvatarUrl = null;
+      let avatarPath = null;
       
       // Handle avatar upload if provided
       if (data.avatar) {
         const fileExt = data.avatar.name.split('.').pop();
         const fileName = `${session.user.id}-${Math.random()}.${fileExt}`;
         
-        const { error: uploadError, data: uploadData } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from('profile_pictures')
           .upload(fileName, data.avatar);
 
@@ -72,16 +77,18 @@ const CreateProfile = () => {
           .from('profile_pictures')
           .getPublicUrl(fileName);
 
-        finalAvatarUrl = publicUrl;
+        avatarPath = publicUrl;
       }
 
       // Create profile
       const { error: profileError } = await supabase
         .from('enthusiast_profiles')
-        .insert({
+        .upsert({
           id: session.user.id,
-          full_name: data.fullName,
-          avatar_url: finalAvatarUrl,
+          first_name: data.firstName,
+          last_name: data.lastName,
+          birthdate: data.birthdate,
+          avatar_url: avatarPath,
         });
 
       if (profileError) {
@@ -107,7 +114,7 @@ const CreateProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-motorsport-blue via-motorsport-purple to-motorsport-pink flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8 bg-white rounded-lg p-6 shadow-xl">
         <div className="text-center">
           <h1 className="text-2xl font-bold">Complete Your Profile</h1>
@@ -120,7 +127,7 @@ const CreateProfile = () => {
               <Avatar className="w-24 h-24">
                 <AvatarImage src={avatarUrl || ""} />
                 <AvatarFallback>
-                  <Upload className="w-8 h-8 text-gray-400" />
+                  <Camera className="w-8 h-8 text-gray-400" />
                 </AvatarFallback>
               </Avatar>
               
@@ -137,19 +144,57 @@ const CreateProfile = () => {
                   variant="outline"
                   onClick={() => document.getElementById("avatar-upload")?.click()}
                 >
+                  <Camera className="mr-2" />
                   Upload Profile Picture
                 </Button>
               </div>
             </div>
 
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>First Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your first name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Last Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your last name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <FormField
               control={form.control}
-              name="fullName"
+              name="birthdate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel>Birthdate</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your full name" {...field} />
+                    <Input 
+                      type="date" 
+                      {...field}
+                      onChange={(e) => {
+                        const date = e.target.value;
+                        field.onChange(date);
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
