@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import EnthusiastLogin from "./pages/EnthusiastLogin";
+import CreateProfile from "./pages/CreateProfile";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => {
               <Route path="/" element={<Login />} />
               <Route path="/home" element={<Index />} />
               <Route path="/enthusiast-login" element={<EnthusiastLogin />} />
+              <Route path="/create-profile" element={<CreateProfile />} />
               <Route path="*" element={<Login />} />
             </Routes>
           </BrowserRouter>

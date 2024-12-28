@@ -10,9 +10,20 @@ const EnthusiastLogin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "SIGNED_IN") {
-        navigate("/home");
+        // Check if user has a profile
+        const { data: profile } = await supabase
+          .from('enthusiast_profiles')
+          .select('*')
+          .eq('id', session?.user.id)
+          .single();
+
+        if (!profile) {
+          navigate("/create-profile");
+        } else {
+          navigate("/home");
+        }
       }
     });
 
