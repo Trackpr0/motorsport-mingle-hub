@@ -20,9 +20,8 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Profile Info */}
       <div className="p-4">
-        <div className="flex items-start gap-4 mb-6">
+        <div className="flex items-start gap-4 mb-8">
           <Avatar className="w-24 h-24">
             <AvatarImage src="/placeholder.svg" />
             <AvatarFallback>
@@ -35,8 +34,7 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Trophies Section */}
-        <div className="space-y-4 mb-6">
+        <div className="space-y-4 mb-8">
           <Button 
             variant="ghost" 
             className="w-full flex justify-between items-center px-0 hover:bg-transparent"
@@ -47,7 +45,6 @@ const Profile = () => {
           </Button>
         </div>
 
-        {/* Primary Vehicle */}
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <span className="text-lg">Primary Vehicle</span>
@@ -93,7 +90,6 @@ const Profile = () => {
         </TabsContent>
       </Tabs>
 
-      {/* Navigation Footer */}
       <FooterNav />
     </div>
   );
