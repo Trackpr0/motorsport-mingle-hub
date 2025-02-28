@@ -1,10 +1,47 @@
+
+import { useState, useEffect } from "react";
 import { Settings, MessageSquare, ChevronRight, User, Timer } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FooterNav from "@/components/navigation/FooterNav";
+import { supabase } from "@/integrations/supabase/client";
 
 const Profile = () => {
+  const [username, setUsername] = useState<string>("Loading...");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        setIsLoading(true);
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session) {
+          const { data, error } = await supabase
+            .from('enthusiast_profiles')
+            .select('username, avatar_url')
+            .eq('id', session.user.id)
+            .single();
+          
+          if (error) {
+            console.error('Error fetching profile:', error);
+          } else if (data) {
+            setUsername(data.username || 'No username set');
+            setAvatarUrl(data.avatar_url);
+          }
+        }
+      } catch (error) {
+        console.error('Unexpected error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
   return (
     <div className="min-h-screen pb-20 bg-white text-black">
       <div className="flex justify-between items-center p-4">
@@ -24,13 +61,18 @@ const Profile = () => {
       <div className="p-4">
         <div className="flex items-start gap-4 mb-6">
           <Avatar className="w-24 h-24">
-            <AvatarImage src="/placeholder.svg" />
-            <AvatarFallback>
-              <User className="w-12 h-12" />
-            </AvatarFallback>
+            {avatarUrl ? (
+              <AvatarImage src={avatarUrl} alt={username} />
+            ) : (
+              <AvatarFallback>
+                <User className="w-12 h-12" />
+              </AvatarFallback>
+            )}
           </Avatar>
           <div className="flex flex-col gap-2">
-            <h2 className="text-xl font-semibold">Person's Name</h2>
+            <h2 className="text-xl font-semibold">
+              {isLoading ? "Loading..." : username}
+            </h2>
             <Button className="bg-blue-600 hover:bg-blue-700">EDIT PROFILE</Button>
           </div>
         </div>
