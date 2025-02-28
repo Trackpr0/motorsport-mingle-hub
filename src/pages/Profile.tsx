@@ -6,11 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FooterNav from "@/components/navigation/FooterNav";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Profile = () => {
   const [username, setUsername] = useState<string>("Loading...");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -42,24 +45,59 @@ const Profile = () => {
     fetchProfile();
   }, []);
 
+  const handleSettingsClick = () => {
+    toast.info("Settings clicked");
+    // Navigate to settings page when implemented
+    // navigate("/settings");
+  };
+
+  const handleMessagesClick = () => {
+    toast.info("Messages clicked");
+    // Navigate to messages page when implemented
+    // navigate("/messages");
+  };
+
+  const handleNotificationsClick = () => {
+    toast.info("Notifications clicked");
+    // Navigate to notifications page when implemented
+    // navigate("/notifications");
+  };
+
   return (
     <div className="min-h-screen pb-20 bg-white text-black">
       <div className="flex justify-between items-center p-4">
         <h1 className="text-2xl font-bold">Profile</h1>
         <div className="flex gap-4">
-          <Settings className="w-6 h-6" />
-          <div className="relative">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-10 w-10 p-0" 
+            onClick={handleSettingsClick}
+          >
+            <Settings className="w-6 h-6" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-10 w-10 p-0 relative" 
+            onClick={handleNotificationsClick}
+          >
             <Bell className="w-6 h-6 text-gray-700" />
             <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
               2
             </span>
-          </div>
-          <div className="relative">
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-10 w-10 p-0 relative" 
+            onClick={handleMessagesClick}
+          >
             <MessageSquare className="w-6 h-6 text-gray-700" />
             <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
               5
             </span>
-          </div>
+          </Button>
         </div>
       </div>
 
