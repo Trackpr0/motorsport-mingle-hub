@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Settings, MessageSquare, ChevronRight, User, Timer } from "lucide-react";
+import { Settings, MessageSquare, ChevronRight, User, Timer, Bell } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -49,9 +49,15 @@ const Profile = () => {
         <div className="flex gap-4">
           <Settings className="w-6 h-6" />
           <div className="relative">
-            <MessageSquare className="w-6 h-6" />
+            <Bell className="w-6 h-6 text-gray-700" />
             <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
               2
+            </span>
+          </div>
+          <div className="relative">
+            <MessageSquare className="w-6 h-6 text-gray-700" />
+            <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+              5
             </span>
           </div>
         </div>
