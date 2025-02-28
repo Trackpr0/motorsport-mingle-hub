@@ -11,6 +11,7 @@ import { toast } from "@/hooks/use-toast";
 const EnthusiastLogin = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
     console.log("Setting up auth state change listener");
@@ -54,6 +55,18 @@ const EnthusiastLogin = () => {
       }
     });
 
+    // Check for auth-related errors in URL
+    const url = new URL(window.location.href);
+    const errorDescription = url.searchParams.get('error_description');
+    if (errorDescription) {
+      setAuthError(errorDescription);
+      toast({
+        title: "Authentication Error",
+        description: errorDescription,
+        variant: "destructive",
+      });
+    }
+
     return () => {
       console.log("Cleaning up auth state change listener");
       subscription.unsubscribe();
@@ -75,6 +88,12 @@ const EnthusiastLogin = () => {
         
         <div className="backdrop-blur-lg bg-black/20 rounded-lg shadow-xl p-8">
           <h2 className="text-2xl font-bold text-center mb-6 text-white">Enthusiast Login</h2>
+          
+          {authError && (
+            <div className="mb-4 p-3 bg-red-500/20 border border-red-500 rounded text-white">
+              {authError}
+            </div>
+          )}
           
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
@@ -113,14 +132,6 @@ const EnthusiastLogin = () => {
                 },
               }}
               providers={["google", "facebook", "twitter"]}
-              onError={(error) => {
-                console.error("Auth error:", error);
-                toast({
-                  title: "Authentication Error",
-                  description: error.message || "Failed to sign in",
-                  variant: "destructive",
-                });
-              }}
             />
           )}
         </div>
