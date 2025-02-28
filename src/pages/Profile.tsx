@@ -64,45 +64,32 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen pb-20 bg-white text-black">
-      <div className="flex justify-between items-center p-4">
-        <h1 className="text-2xl font-bold">Profile</h1>
-        <div className="flex gap-4">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="h-10 w-10 p-0" 
-            onClick={handleSettingsClick}
-          >
-            <Settings className="w-6 h-6" />
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="h-10 w-10 p-0 relative" 
-            onClick={handleNotificationsClick}
-          >
-            <Bell className="w-6 h-6 text-gray-700" />
-            <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-              2
-            </span>
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="h-10 w-10 p-0 relative" 
-            onClick={handleMessagesClick}
-          >
-            <MessageSquare className="w-6 h-6 text-gray-700" />
-            <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-              5
-            </span>
-          </Button>
+    <div className="min-h-screen pb-20 bg-[#F8F9FE]">
+      <div className="sticky top-0 z-10 bg-white p-4 shadow-sm">
+        <div className="max-w-md mx-auto flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Profile</h1>
+          <div className="flex items-center gap-4">
+            <button className="relative" onClick={handleNotificationsClick}>
+              <Bell className="w-6 h-6 text-gray-700" />
+              <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                2
+              </span>
+            </button>
+            <button className="relative" onClick={handleMessagesClick}>
+              <MessageSquare className="w-6 h-6 text-gray-700" />
+              <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                5
+              </span>
+            </button>
+            <button onClick={handleSettingsClick}>
+              <Settings className="w-6 h-6 text-gray-700" />
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Profile Info */}
-      <div className="p-4">
+      <div className="max-w-md mx-auto p-4">
         <div className="flex items-start gap-4 mb-6">
           <Avatar className="w-24 h-24">
             {avatarUrl ? (
@@ -150,7 +137,7 @@ const Profile = () => {
       </div>
 
       <Tabs defaultValue="posts" className="w-full mt-6">
-        <TabsList className="w-full flex justify-around bg-transparent">
+        <TabsList className="max-w-md mx-auto w-full flex justify-around bg-transparent">
           <TabsTrigger 
             value="posts" 
             className="flex-1 data-[state=active]:bg-gray-100 transition-colors"
@@ -164,12 +151,12 @@ const Profile = () => {
             <Timer className="w-5 h-5" />
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="posts" className="p-4">
+        <TabsContent value="posts" className="max-w-md mx-auto p-4">
           <div className="flex flex-col items-center justify-center h-48 text-gray-500 font-medium">
             Go to the Track
           </div>
         </TabsContent>
-        <TabsContent value="laptimes" className="p-4">
+        <TabsContent value="laptimes" className="max-w-md mx-auto p-4">
           <div className="flex flex-col items-center justify-center h-48 gap-4">
             <Timer className="w-12 h-12 text-gray-400" />
             <Button size="lg" className="rounded-full bg-blue-600 hover:bg-blue-700">
