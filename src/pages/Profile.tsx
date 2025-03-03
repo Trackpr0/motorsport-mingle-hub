@@ -98,6 +98,14 @@ const Profile = () => {
             </div>
           </div>
 
+          {/* Business Location - Moved above Tickets Sold */}
+          <div className="space-y-4 mb-6">
+            <div className="bg-gray-100 rounded-lg p-4">
+              <h3 className="font-medium mb-2 text-black">Location</h3>
+              <p className="text-gray-600">No location set</p>
+            </div>
+          </div>
+
           {/* Tickets Sold Section */}
           <div className="space-y-4 mb-6">
             <div className="flex justify-between items-center">
@@ -114,14 +122,6 @@ const Profile = () => {
               <div className="flex flex-col items-center justify-center text-gray-400">
                 <p>No ticket data available</p>
               </div>
-            </div>
-          </div>
-
-          {/* Business Location */}
-          <div className="space-y-4 mb-6">
-            <div className="bg-gray-100 rounded-lg p-4">
-              <h3 className="font-medium mb-2 text-black">Location</h3>
-              <p className="text-gray-600">No location set</p>
             </div>
           </div>
 
