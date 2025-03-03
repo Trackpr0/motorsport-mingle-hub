@@ -21,26 +21,45 @@ const BusinessLogin = () => {
       if (event === "SIGNED_IN" && session) {
         setIsLoading(true);
         try {
-          // Check if user has a business profile
+          // Check if user exists and what type they are
           const { data: profile, error } = await supabase
-            .from('enthusiast_profiles') // We're still using the same table for now
+            .from('enthusiast_profiles')
             .select('*')
             .eq('id', session.user.id)
             .single();
 
-          if (error) {
+          if (error && error.code !== 'PGRST116') {
             console.error("Error fetching profile:", error);
             toast({
               title: "Error",
               description: "Failed to fetch profile information",
               variant: "destructive",
             });
+            setIsLoading(false);
+            return;
           }
 
-          if (!profile) {
-            navigate("/create-profile"); // We could create a business-specific profile page in the future
-          } else {
+          // If profile exists, check if it's a business profile
+          if (profile) {
+            if (profile.user_type !== 'business') {
+              // If not a business profile, sign out and show error
+              await supabase.auth.signOut();
+              toast({
+                title: "Access Denied",
+                description: "This account is registered as an Enthusiast. Please use the Enthusiast login.",
+                variant: "destructive",
+              });
+              setIsLoading(false);
+              return;
+            }
+            
+            // It's a valid business account, redirect to home
             navigate("/home");
+          } else {
+            // No profile yet, create one as business
+            navigate("/create-profile", { 
+              state: { userType: "business" } 
+            });
           }
         } catch (error) {
           console.error("Error in auth flow:", error);

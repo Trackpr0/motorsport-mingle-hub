@@ -21,26 +21,45 @@ const EnthusiastLogin = () => {
       if (event === "SIGNED_IN" && session) {
         setIsLoading(true);
         try {
-          // Check if user has a profile
+          // Check if user exists and what type they are
           const { data: profile, error } = await supabase
             .from('enthusiast_profiles')
             .select('*')
             .eq('id', session.user.id)
             .single();
 
-          if (error) {
+          if (error && error.code !== 'PGRST116') {
             console.error("Error fetching profile:", error);
             toast({
               title: "Error",
               description: "Failed to fetch profile information",
               variant: "destructive",
             });
+            setIsLoading(false);
+            return;
           }
 
-          if (!profile) {
-            navigate("/create-profile");
-          } else {
+          // If profile exists, check if it's an enthusiast profile
+          if (profile) {
+            if (profile.user_type !== 'enthusiast') {
+              // If not an enthusiast profile, sign out and show error
+              await supabase.auth.signOut();
+              toast({
+                title: "Access Denied",
+                description: "This account is registered as a Business. Please use the Business login.",
+                variant: "destructive",
+              });
+              setIsLoading(false);
+              return;
+            }
+            
+            // It's a valid enthusiast account, redirect to home
             navigate("/home");
+          } else {
+            // No profile yet, create one as enthusiast
+            navigate("/create-profile", { 
+              state: { userType: "enthusiast" } 
+            });
           }
         } catch (error) {
           console.error("Error in auth flow:", error);
