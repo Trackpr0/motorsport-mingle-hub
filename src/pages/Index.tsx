@@ -48,7 +48,7 @@ const Index = () => {
     {
       type: "business",
       profileId: profiles.length > 0 ? profiles[0].id : null,
-      name: profiles.length > 0 ? profiles[0].full_name || profiles[0].username || "Business Account" : "Business Name",
+      name: profiles.length > 0 ? profiles[0].username || profiles[0].full_name || "Business Account" : "Business Name",
       location: "122 Sample Street, GA, US, 12311",
       rating: 4.5,
       imageUrl: "https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?auto=format&fit=crop&q=80",
@@ -57,8 +57,8 @@ const Index = () => {
     },
     {
       type: "personal",
-      profileId: profiles.length > 1 ? profiles[1].id : null,
-      name: profiles.length > 1 ? profiles[1].full_name || profiles[1].username || "Personal Account" : "Personal User",
+      profileId: profiles.length > 0 ? profiles[0].id : null,
+      name: profiles.length > 0 ? profiles[0].username || profiles[0].full_name || "Personal Account" : "Personal User",
       imageUrl: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80",
       description: "Check out my new ride! Ready for the track day 🏎️",
       hasEvent: false,
