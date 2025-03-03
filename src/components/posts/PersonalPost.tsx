@@ -9,6 +9,9 @@ interface PersonalPostProps {
 }
 
 const PersonalPost = ({ name, imageUrl, description, profileId }: PersonalPostProps) => {
+  // Override the name to "trackdaypro" for all personal posts
+  const displayName = "trackdaypro";
+  
   return (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
       <div className="p-4 flex items-center">
@@ -18,7 +21,7 @@ const PersonalPost = ({ name, imageUrl, description, profileId }: PersonalPostPr
           </button>
           <div className="flex flex-col items-start">
             <button className="font-semibold text-gray-900 hover:text-gray-700 transition-colors">
-              {name}
+              {displayName}
             </button>
           </div>
         </div>
