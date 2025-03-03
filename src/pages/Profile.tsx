@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Settings, MessageSquare, ChevronRight, User, Timer, Bell } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -71,7 +70,6 @@ const Profile = () => {
     // navigate("/notifications");
   };
 
-  // Render business profile view
   const renderBusinessProfile = () => {
     return (
       <>
@@ -90,7 +88,6 @@ const Profile = () => {
               <h2 className="text-xl font-semibold text-black">
                 {isLoading ? "Loading..." : businessName}
               </h2>
-              <p className="text-gray-500">{businessName}</p>
               <Button className="bg-blue-600 hover:bg-blue-700">EDIT PROFILE</Button>
             </div>
           </div>
@@ -144,7 +141,6 @@ const Profile = () => {
     );
   };
 
-  // Render enthusiast (regular user) profile view
   const renderEnthusiastProfile = () => {
     return (
       <>
@@ -253,10 +249,8 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Conditionally render the appropriate profile type */}
       {userType === 'business' ? renderBusinessProfile() : renderEnthusiastProfile()}
 
-      {/* Navigation Footer */}
       <FooterNav />
     </div>
   );
