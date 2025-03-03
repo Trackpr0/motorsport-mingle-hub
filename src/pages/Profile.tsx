@@ -90,7 +90,7 @@ const Profile = () => {
               <h2 className="text-xl font-semibold">
                 {isLoading ? "Loading..." : businessName}
               </h2>
-              <p className="text-gray-500">Business Profile</p>
+              <p className="text-gray-500">{businessName}</p>
               <Button className="bg-blue-600 hover:bg-blue-700">EDIT PROFILE</Button>
             </div>
           </div>
