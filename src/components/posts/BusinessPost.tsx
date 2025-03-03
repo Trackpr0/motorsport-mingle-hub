@@ -1,3 +1,4 @@
+
 import { Heart, MessageCircle, Share2 } from "lucide-react";
 
 interface BusinessPostProps {
@@ -7,9 +8,10 @@ interface BusinessPostProps {
   imageUrl: string;
   description: string;
   hasEvent: boolean;
+  profileId?: string | null;
 }
 
-const BusinessPost = ({ name, location, rating, imageUrl, description, hasEvent }: BusinessPostProps) => {
+const BusinessPost = ({ name, location, rating, imageUrl, description, hasEvent, profileId }: BusinessPostProps) => {
   return (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
       <div className="p-4 flex items-center justify-between">

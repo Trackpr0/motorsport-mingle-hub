@@ -1,12 +1,14 @@
+
 import { Heart, MessageCircle, Share2 } from "lucide-react";
 
 interface PersonalPostProps {
   name: string;
   imageUrl: string;
   description: string;
+  profileId?: string | null;
 }
 
-const PersonalPost = ({ name, imageUrl, description }: PersonalPostProps) => {
+const PersonalPost = ({ name, imageUrl, description, profileId }: PersonalPostProps) => {
   return (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
       <div className="p-4 flex items-center">
