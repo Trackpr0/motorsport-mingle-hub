@@ -87,7 +87,7 @@ const Profile = () => {
               )}
             </Avatar>
             <div className="flex flex-col gap-2">
-              <h2 className="text-xl font-semibold">
+              <h2 className="text-xl font-semibold text-black">
                 {isLoading ? "Loading..." : businessName}
               </h2>
               <p className="text-gray-500">{businessName}</p>
@@ -98,7 +98,7 @@ const Profile = () => {
           {/* Business Location */}
           <div className="space-y-4 mb-6">
             <div className="bg-gray-100 rounded-lg p-4">
-              <h3 className="font-medium mb-2">Location</h3>
+              <h3 className="font-medium mb-2 text-black">Location</h3>
               <p className="text-gray-600">No location set</p>
             </div>
           </div>
@@ -115,13 +115,13 @@ const Profile = () => {
           <TabsList className="max-w-md mx-auto w-full flex justify-around bg-transparent">
             <TabsTrigger 
               value="posts" 
-              className="flex-1 data-[state=active]:bg-gray-100 transition-colors"
+              className="flex-1 data-[state=active]:bg-gray-100 transition-colors text-black"
             >
               <User className="w-5 h-5" />
             </TabsTrigger>
             <TabsTrigger 
               value="events" 
-              className="flex-1 data-[state=active]:bg-gray-100 transition-colors"
+              className="flex-1 data-[state=active]:bg-gray-100 transition-colors text-black"
             >
               <Timer className="w-5 h-5" />
             </TabsTrigger>
@@ -160,7 +160,7 @@ const Profile = () => {
               )}
             </Avatar>
             <div className="flex flex-col gap-2">
-              <h2 className="text-xl font-semibold">
+              <h2 className="text-xl font-semibold text-black">
                 {isLoading ? "Loading..." : username}
               </h2>
               <Button className="bg-blue-600 hover:bg-blue-700">EDIT PROFILE</Button>
@@ -171,7 +171,7 @@ const Profile = () => {
           <div className="space-y-4 mb-6">
             <Button 
               variant="ghost" 
-              className="w-full flex justify-between items-center px-0 hover:bg-transparent"
+              className="w-full flex justify-between items-center px-0 hover:bg-transparent text-black"
               onClick={() => {/* Trophy page navigation will be implemented later */}}
             >
               <span className="text-lg">Trophies</span>
@@ -182,7 +182,7 @@ const Profile = () => {
           {/* Primary Vehicle */}
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-lg">Primary Vehicle</span>
+              <span className="text-lg text-black">Primary Vehicle</span>
               <Button variant="link" className="text-blue-600 p-0">
                 My Garage <ChevronRight className="w-4 h-4" />
               </Button>
@@ -199,13 +199,13 @@ const Profile = () => {
           <TabsList className="max-w-md mx-auto w-full flex justify-around bg-transparent">
             <TabsTrigger 
               value="posts" 
-              className="flex-1 data-[state=active]:bg-gray-100 transition-colors"
+              className="flex-1 data-[state=active]:bg-gray-100 transition-colors text-black"
             >
               <User className="w-5 h-5" />
             </TabsTrigger>
             <TabsTrigger 
               value="laptimes" 
-              className="flex-1 data-[state=active]:bg-gray-100 transition-colors"
+              className="flex-1 data-[state=active]:bg-gray-100 transition-colors text-black"
             >
               <Timer className="w-5 h-5" />
             </TabsTrigger>
@@ -232,7 +232,7 @@ const Profile = () => {
     <div className="min-h-screen pb-20 bg-[#F8F9FE]">
       <div className="sticky top-0 z-10 bg-white p-4 shadow-sm">
         <div className="max-w-md mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Profile</h1>
+          <h1 className="text-2xl font-bold text-black">Profile</h1>
           <div className="flex items-center gap-4">
             <button className="relative" onClick={handleNotificationsClick}>
               <Bell className="w-6 h-6 text-gray-700" />
