@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,6 +11,7 @@ import BusinessLogin from "./pages/BusinessLogin";
 import CreateProfile from "./pages/CreateProfile";
 import Profile from "./pages/Profile";
 import CreateBusinessProfile from "./pages/CreateBusinessProfile";
+import CreatePost from "./pages/CreatePost";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +31,7 @@ export default function App() {
               <Route path="/create-profile" element={<CreateProfile />} />
               <Route path="/create-business-profile" element={<CreateBusinessProfile />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/create-post" element={<CreatePost />} />
               <Route path="*" element={<Login />} />
             </Routes>
           </Router>
