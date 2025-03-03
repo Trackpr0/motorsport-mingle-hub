@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from "react";
 import { ArrowLeft, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -20,11 +19,8 @@ const CreatePost = () => {
       return;
     }
     
-    // In a real app, this would navigate to a post creation screen
-    // with the selected image data
-    toast.success("Image selected! This would proceed to post creation.");
-    // For now, just go back to the previous page
-    navigate(-1);
+    // Navigate to post details page with the selected image
+    navigate("/post-details", { state: { selectedImage } });
   };
 
   const openGallery = () => {

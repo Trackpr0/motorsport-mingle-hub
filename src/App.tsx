@@ -12,6 +12,7 @@ import CreateProfile from "./pages/CreateProfile";
 import Profile from "./pages/Profile";
 import CreateBusinessProfile from "./pages/CreateBusinessProfile";
 import CreatePost from "./pages/CreatePost";
+import PostDetails from "./pages/PostDetails";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ export default function App() {
               <Route path="/create-business-profile" element={<CreateBusinessProfile />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/create-post" element={<CreatePost />} />
+              <Route path="/post-details" element={<PostDetails />} />
               <Route path="*" element={<Login />} />
             </Routes>
           </Router>
