@@ -6,21 +6,22 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
-import { ProfilePictureUpload } from "@/components/profile/ProfilePictureUpload";
-import { ProfileFormFields } from "@/components/profile/ProfileForm";
-import { ProfileFormValues } from "@/components/profile/types";
+import { BusinessProfilePictureUpload } from "@/components/profile/BusinessProfilePictureUpload";
+import { BusinessProfileFormFields } from "@/components/profile/BusinessProfileForm";
 
-const CreateProfile = () => {
+interface BusinessProfileFormValues {
+  businessName: string;
+  avatar?: File;
+}
+
+const CreateBusinessProfile = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
-  const form = useForm<ProfileFormValues>({
+  const form = useForm<BusinessProfileFormValues>({
     defaultValues: {
-      username: "",
-      firstName: "",
-      lastName: "",
-      birthdate: "",
+      businessName: "",
     },
   });
 
@@ -29,18 +30,6 @@ const CreateProfile = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         navigate("/");
-        return;
-      }
-      
-      // Check if user is a business user and redirect to business profile creation
-      const { data: profile } = await supabase
-        .from('enthusiast_profiles')
-        .select('user_type')
-        .eq('id', session.user.id)
-        .single();
-      
-      if (profile && profile.user_type === 'business') {
-        navigate("/create-business-profile");
       }
     };
     checkSession();
@@ -54,7 +43,7 @@ const CreateProfile = () => {
     }
   };
 
-  const onSubmit = async (data: ProfileFormValues) => {
+  const onSubmit = async (data: BusinessProfileFormValues) => {
     try {
       setIsLoading(true);
       const { data: { session } } = await supabase.auth.getSession();
@@ -92,20 +81,19 @@ const CreateProfile = () => {
         .from('enthusiast_profiles')
         .upsert({
           id: session.user.id,
-          username: data.username,
-          first_name: data.firstName,
-          last_name: data.lastName,
-          birthdate: data.birthdate,
+          username: data.businessName, // Use business name as username
+          first_name: data.businessName, // Store business name in first_name field for now
+          user_type: 'business', // Set user type to business
           avatar_url: avatarPath,
         });
 
       if (profileError) {
         console.error('Profile error:', profileError);
-        toast.error("Error creating profile");
+        toast.error("Error creating business profile");
         return;
       }
 
-      toast.success("Profile created successfully!");
+      toast.success("Business profile created successfully!");
       navigate("/home");
     } catch (error) {
       console.error('Unexpected error:', error);
@@ -122,19 +110,19 @@ const CreateProfile = () => {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <ProfilePictureUpload
+            <BusinessProfilePictureUpload
               avatarUrl={avatarUrl}
               onFileChange={handleAvatarChange}
             />
             
-            <ProfileFormFields form={form} />
+            <BusinessProfileFormFields form={form} />
 
             <Button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white"
               disabled={isLoading}
             >
-              {isLoading ? "Creating..." : "Continue"}
+              Continue
             </Button>
           </form>
         </Form>
@@ -143,4 +131,4 @@ const CreateProfile = () => {
   );
 };
 
-export default CreateProfile;
+export default CreateBusinessProfile;
