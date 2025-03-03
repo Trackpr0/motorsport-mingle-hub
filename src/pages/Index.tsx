@@ -57,8 +57,8 @@ const Index = () => {
     },
     {
       type: "personal",
-      profileId: "trackdaypro", // Set this to "trackdaypro" for the personal post
-      name: "trackdaypro", // Use "trackdaypro" for the name
+      profileId: profiles.length > 1 ? profiles[1].id : null,
+      name: profiles.length > 1 ? profiles[1].full_name || profiles[1].username || "Personal Account" : "Personal User",
       imageUrl: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80",
       description: "Check out my new ride! Ready for the track day 🏎️",
       hasEvent: false,
