@@ -25,7 +25,6 @@ const TitleInput = ({
           <Switch 
             checked={membersOnly} 
             onCheckedChange={onMembersOnlyChange} 
-            className={membersOnly ? "bg-blue-600" : "bg-gray-200"}
           />
         </div>
       </div>
