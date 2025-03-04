@@ -33,6 +33,15 @@ const PostDetails = () => {
         return;
       }
 
+      // Get the user profile to determine if it's a business or personal account
+      const { data: profileData } = await supabase
+        .from('enthusiast_profiles')
+        .select('user_type')
+        .eq('id', session.user.id)
+        .single();
+
+      const postType = profileData?.user_type === 'business' ? 'business' : 'personal';
+
       // Create the post in Supabase
       const { error } = await supabase
         .from('posts')
@@ -41,7 +50,7 @@ const PostDetails = () => {
           caption,
           location: locationText,
           image_url: selectedImage,
-          type: 'personal',
+          type: postType,
           has_event: false
         });
 

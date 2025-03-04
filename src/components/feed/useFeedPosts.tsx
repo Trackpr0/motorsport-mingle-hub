@@ -18,7 +18,9 @@ export const useFeedPosts = () => {
             enthusiast_profiles (
               username,
               full_name,
-              avatar_url
+              avatar_url,
+              user_type,
+              first_name
             )
           `)
           .order('created_at', { ascending: false });
@@ -26,6 +28,7 @@ export const useFeedPosts = () => {
         if (error) throw error;
         
         if (data) {
+          console.log("Feed posts fetched:", data);
           setPosts(data);
         }
       } catch (error) {
@@ -42,6 +45,7 @@ export const useFeedPosts = () => {
 
     fetchPosts();
 
+    // Set up realtime subscription for new posts
     const channel = supabase
       .channel('posts-channel')
       .on('postgres_changes', 
@@ -51,7 +55,33 @@ export const useFeedPosts = () => {
           table: 'posts' 
         }, 
         (payload) => {
-          setPosts(current => [payload.new, ...current]);
+          console.log("New post received in realtime:", payload.new);
+          
+          // We need to fetch the related profile data for the new post
+          const fetchPostWithProfile = async () => {
+            const { data, error } = await supabase
+              .from('posts')
+              .select(`
+                *,
+                enthusiast_profiles (
+                  username,
+                  full_name,
+                  avatar_url,
+                  user_type,
+                  first_name
+                )
+              `)
+              .eq('id', payload.new.id)
+              .single();
+              
+            if (error) {
+              console.error("Error fetching new post details:", error);
+            } else if (data) {
+              setPosts(current => [data, ...current]);
+            }
+          };
+          
+          fetchPostWithProfile();
         }
       )
       .subscribe();
