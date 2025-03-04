@@ -81,7 +81,7 @@ const CreateEvent = () => {
             placeholder="Enter Here" 
             value={title}
             onChange={handleTitleChange}
-            className="w-full"
+            className="w-full bg-white text-black border-gray-300"
           />
         </div>
         
