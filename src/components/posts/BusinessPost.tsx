@@ -1,5 +1,6 @@
 
 import { Heart, MessageCircle, Share2 } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
 interface BusinessPostProps {
   name: string;
@@ -9,16 +10,32 @@ interface BusinessPostProps {
   description: string;
   hasEvent: boolean;
   profileId?: string | null;
+  avatarUrl?: string | null;
 }
 
-const BusinessPost = ({ name, location, rating, imageUrl, description, hasEvent, profileId }: BusinessPostProps) => {
+const BusinessPost = ({ 
+  name, 
+  location, 
+  rating, 
+  imageUrl, 
+  description, 
+  hasEvent, 
+  profileId,
+  avatarUrl 
+}: BusinessPostProps) => {
   return (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
       <div className="p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
-            <img src="/placeholder.svg" alt="Profile" className="w-full h-full object-cover" />
-          </button>
+          <Avatar className="w-12 h-12">
+            {avatarUrl ? (
+              <AvatarImage src={avatarUrl} alt={name} />
+            ) : (
+              <AvatarFallback className="bg-gray-200">
+                {name.charAt(0)}
+              </AvatarFallback>
+            )}
+          </Avatar>
           <div className="flex flex-col items-start">
             <button className="font-semibold text-gray-900 hover:text-gray-700 transition-colors">
               {name}

@@ -40,6 +40,7 @@ const FeedContent: React.FC<FeedContentProps> = ({ posts, loading }) => {
             description={post.caption || ""}
             hasEvent={post.has_event}
             profileId={post.user_id}
+            avatarUrl={post.enthusiast_profiles?.avatar_url}
           />
         ) : (
           <PersonalPost
@@ -50,6 +51,7 @@ const FeedContent: React.FC<FeedContentProps> = ({ posts, loading }) => {
             imageUrl={post.image_url}
             description={post.caption || ""}
             profileId={post.user_id}
+            avatarUrl={post.enthusiast_profiles?.avatar_url}
           />
         );
       })}
