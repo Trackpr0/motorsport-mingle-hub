@@ -76,7 +76,7 @@ const LevelItem = ({
                 <Minus className="h-4 w-4" />
               </Button>
               
-              <span className="text-center w-8">
+              <span className="text-center w-8 text-black font-medium">
                 {quantity}
               </span>
               
