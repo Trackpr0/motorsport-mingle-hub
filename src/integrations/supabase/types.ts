@@ -48,6 +48,53 @@ export type Database = {
         }
         Relationships: []
       }
+      posts: {
+        Row: {
+          caption: string | null
+          created_at: string
+          event_id: string | null
+          has_event: boolean | null
+          id: string
+          image_url: string
+          location: string | null
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          event_id?: string | null
+          has_event?: boolean | null
+          id?: string
+          image_url: string
+          location?: string | null
+          type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          event_id?: string | null
+          has_event?: boolean | null
+          id?: string
+          image_url?: string
+          location?: string | null
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "enthusiast_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

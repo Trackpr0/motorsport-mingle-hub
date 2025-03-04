@@ -9,61 +9,66 @@ import { toast } from "../components/ui/use-toast";
 
 const Index = () => {
   const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState<any[]>([]);
   const [profiles, setProfiles] = useState<any[]>([]);
   
   useEffect(() => {
-    async function fetchProfiles() {
+    // Fetch posts and set up real-time subscription
+    const fetchPosts = async () => {
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from('enthusiast_profiles')
-          .select('*')
-          .limit(5);
         
-        if (error) {
-          throw error;
-        }
+        // Fetch posts with user profiles
+        const { data, error } = await supabase
+          .from('posts')
+          .select(`
+            *,
+            enthusiast_profiles (
+              username,
+              full_name,
+              avatar_url
+            )
+          `)
+          .order('created_at', { ascending: false });
+        
+        if (error) throw error;
         
         if (data) {
-          setProfiles(data);
-          console.log("Fetched profiles:", data);
+          setPosts(data);
         }
       } catch (error) {
-        console.error("Error fetching profiles:", error);
+        console.error("Error fetching posts:", error);
         toast({
-          title: "Error fetching profiles",
-          description: "Could not load user data. Please try again later.",
+          title: "Error fetching posts",
+          description: "Could not load posts. Please try again later.",
           variant: "destructive",
         });
       } finally {
         setLoading(false);
       }
-    }
-    
-    fetchProfiles();
-  }, []);
+    };
 
-  // Sample data - in a real app, this would come from your backend
-  const posts = [
-    {
-      type: "business",
-      profileId: profiles.length > 0 ? profiles[0].id : null,
-      name: profiles.length > 0 ? profiles[0].username || profiles[0].full_name || "Business Account" : "Business Name",
-      location: "122 Sample Street, GA, US, 12311",
-      rating: 4.5,
-      imageUrl: "https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?auto=format&fit=crop&q=80",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore",
-      hasEvent: true,
-    },
-    {
-      type: "personal",
-      profileId: profiles.length > 0 ? profiles[0].id : null,
-      name: profiles.length > 0 ? profiles[0].username || profiles[0].full_name || "Personal Account" : "Personal User",
-      imageUrl: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80",
-      description: "Check out my new ride! Ready for the track day 🏎️",
-      hasEvent: false,
-    }
-  ];
+    fetchPosts();
+
+    // Set up real-time subscription
+    const channel = supabase
+      .channel('posts-channel')
+      .on('postgres_changes', 
+        { 
+          event: 'INSERT', 
+          schema: 'public', 
+          table: 'posts' 
+        }, 
+        (payload) => {
+          setPosts(current => [payload.new, ...current]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#F8F9FE] pb-20">
@@ -73,25 +78,25 @@ const Index = () => {
         {loading ? (
           <div className="text-center py-8">Loading posts...</div>
         ) : (
-          posts.map((post, index) => (
+          posts.map((post) => (
             post.type === "business" ? (
               <BusinessPost
-                key={index}
-                name={post.name}
-                location={post.location}
-                rating={post.rating}
-                imageUrl={post.imageUrl}
-                description={post.description}
-                hasEvent={post.hasEvent}
-                profileId={post.profileId}
+                key={post.id}
+                name={post.enthusiast_profiles?.full_name || post.enthusiast_profiles?.username || "Business Account"}
+                location={post.location || ""}
+                rating={4.5}
+                imageUrl={post.image_url}
+                description={post.caption || ""}
+                hasEvent={post.has_event}
+                profileId={post.user_id}
               />
             ) : (
               <PersonalPost
-                key={index}
-                name={post.name}
-                imageUrl={post.imageUrl}
-                description={post.description}
-                profileId={post.profileId}
+                key={post.id}
+                name={post.enthusiast_profiles?.username || post.enthusiast_profiles?.full_name || "Personal Account"}
+                imageUrl={post.image_url}
+                description={post.caption || ""}
+                profileId={post.user_id}
               />
             )
           ))

@@ -1,18 +1,19 @@
+
 import React, { useState } from "react";
-import { ArrowLeft, Check, ChevronDown } from "lucide-react";
+import { ArrowLeft, ChevronDown } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import LocationInput from "@/components/LocationInput";
+import { supabase } from "@/integrations/supabase/client";
 
-interface PostDetailsProps {}
-
-const PostDetails = ({}: PostDetailsProps) => {
+const PostDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [caption, setCaption] = useState("");
   const [locationText, setLocationText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const selectedImage = location.state?.selectedImage;
 
@@ -20,9 +21,40 @@ const PostDetails = ({}: PostDetailsProps) => {
     navigate(-1);
   };
 
-  const handleConfirmPost = () => {
-    toast.success("Post created successfully!");
-    navigate("/home");
+  const handleConfirmPost = async () => {
+    try {
+      setIsSubmitting(true);
+      
+      // Get the current user's session
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        toast.error("You must be logged in to create a post");
+        return;
+      }
+
+      // Create the post in Supabase
+      const { error } = await supabase
+        .from('posts')
+        .insert({
+          user_id: session.user.id,
+          caption,
+          location: locationText,
+          image_url: selectedImage,
+          type: 'personal',
+          has_event: false
+        });
+
+      if (error) throw error;
+
+      toast.success("Post created successfully!");
+      navigate("/home");
+    } catch (error) {
+      console.error("Error creating post:", error);
+      toast.error("Failed to create post. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!selectedImage) {
@@ -82,8 +114,9 @@ const PostDetails = ({}: PostDetailsProps) => {
           <Button 
             onClick={handleConfirmPost}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-6 rounded-xl"
+            disabled={isSubmitting}
           >
-            Confirm Post
+            {isSubmitting ? "Creating Post..." : "Confirm Post"}
           </Button>
         </div>
       </div>
