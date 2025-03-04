@@ -33,6 +33,17 @@ const LevelItem = ({
     }
   };
 
+  const handleQuantityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Only allow numeric values
+    if (value === '' || /^[0-9]+$/.test(value)) {
+      const numValue = value === '' ? 1 : parseInt(value, 10);
+      // Calculate the change relative to the current quantity
+      const change = numValue - quantity;
+      onQuantityChange(levelId, change);
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center">
@@ -76,9 +87,12 @@ const LevelItem = ({
                 <Minus className="h-4 w-4" />
               </Button>
               
-              <span className="text-center w-8 text-black font-medium">
-                {quantity}
-              </span>
+              <Input
+                type="text"
+                value={quantity}
+                onChange={handleQuantityInputChange}
+                className="text-center w-16 h-8 p-1 text-black font-medium bg-white border-gray-300"
+              />
               
               <Button 
                 size="icon" 
