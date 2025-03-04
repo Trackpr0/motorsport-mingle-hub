@@ -73,6 +73,8 @@ const PostDetails = ({}: PostDetailsProps) => {
           <LocationInput 
             value={locationText}
             onChange={setLocationText}
+            // You can provide a custom token here if needed
+            // mapboxToken="YOUR_MAPBOX_TOKEN"
           />
         </div>
         

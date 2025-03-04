@@ -8,22 +8,36 @@ interface LocationInputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  mapboxToken?: string;
 }
 
-// Temporary access token - in a production app, this should be stored in environment variables
-// This is a placeholder token that should be replaced with your own
-const MAPBOX_TOKEN = "pk.eyJ1IjoibG92YWJsZWRldiIsImEiOiJjbG9iZ2ZmdGswMWhtMmtwaDQzN2NlMXQ3In0.WdOqUosdZJERZBpJn12DAQ";
+// Default token - in production, this should be replaced with a proper token
+const DEFAULT_MAPBOX_TOKEN = "pk.eyJ1IjoibG92YWJsZWRldiIsImEiOiJjbG9iZ2ZmdGswMWhtMmtwaDQzN2NlMXQ3In0.WdOqUosdZJERZBpJn12DAQ";
 
 const LocationInput: React.FC<LocationInputProps> = ({
   value,
   onChange,
-  placeholder = "Enter city, state, or location..."
+  placeholder = "Enter city, state, or location...",
+  mapboxToken
 }) => {
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [tokenError, setTokenError] = useState(false);
   const suggestionsRef = useRef<HTMLDivElement>(null);
-
-  mapboxgl.accessToken = MAPBOX_TOKEN;
+  
+  // Use provided token or fall back to default
+  const token = mapboxToken || DEFAULT_MAPBOX_TOKEN;
+  
+  // Set the token for mapboxgl
+  useEffect(() => {
+    try {
+      mapboxgl.accessToken = token;
+      setTokenError(false);
+    } catch (error) {
+      console.error("Error setting Mapbox token:", error);
+      setTokenError(true);
+    }
+  }, [token]);
 
   useEffect(() => {
     // Close suggestions when clicking outside
@@ -48,9 +62,14 @@ const LocationInput: React.FC<LocationInputProps> = ({
     try {
       const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
         query
-      )}.json?access_token=${MAPBOX_TOKEN}&types=place,locality,neighborhood,address&limit=5`;
+      )}.json?access_token=${token}&types=place,locality,neighborhood,address&limit=5`;
       
       const response = await fetch(endpoint);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
       
       if (data.features) {
@@ -59,6 +78,7 @@ const LocationInput: React.FC<LocationInputProps> = ({
       }
     } catch (error) {
       console.error("Error fetching location suggestions:", error);
+      setTokenError(true);
     }
   };
 
@@ -83,6 +103,12 @@ const LocationInput: React.FC<LocationInputProps> = ({
         className="border-none bg-transparent placeholder:text-gray-400 focus-visible:ring-0 text-black w-full"
         onFocus={() => value && suggestions.length > 0 && setShowSuggestions(true)}
       />
+      
+      {tokenError && (
+        <div className="text-red-500 text-xs mt-1">
+          There was an issue with the Mapbox token. Location suggestions may not work correctly.
+        </div>
+      )}
       
       {showSuggestions && suggestions.length > 0 && (
         <div 
