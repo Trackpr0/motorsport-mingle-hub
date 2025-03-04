@@ -62,28 +62,28 @@ const PostDetails = ({}: PostDetailsProps) => {
             placeholder="Enter here..." 
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
-            className="border-none bg-transparent placeholder:text-gray-400 focus-visible:ring-0"
+            className="border-none bg-transparent placeholder:text-gray-400 focus-visible:ring-0 text-black"
           />
         </div>
         
-        {/* Location Input */}
+        {/* Location Input - For geolocation */}
         <div className="bg-gray-50 p-4 rounded-md">
           <label className="text-blue-600 font-medium block mb-2">Location</label>
           <Input 
-            placeholder="Enter here..." 
+            placeholder="Enter city, state, or location..." 
             value={locationText}
             onChange={(e) => setLocationText(e.target.value)}
-            className="border-none bg-transparent placeholder:text-gray-400 focus-visible:ring-0"
+            className="border-none bg-transparent placeholder:text-gray-400 focus-visible:ring-0 text-black"
           />
         </div>
         
-        {/* Trackday Event Dropdown */}
+        {/* Trackday Event Dropdown - Will show business created events */}
         <div className="bg-gray-50 p-4 rounded-md">
           <label className="text-blue-600 font-medium block mb-2">
             Attach Trackday Event (Optional)
           </label>
-          <button className="flex items-center justify-between w-full text-gray-500 py-1">
-            <span>Title Name</span>
+          <button className="flex items-center justify-between w-full text-black py-1 px-2 bg-white rounded">
+            <span>Select Event</span>
             <ChevronDown size={20} />
           </button>
         </div>
