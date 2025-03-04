@@ -93,7 +93,6 @@ const Profile = () => {
 
     fetchUserPosts();
     
-    // Set up realtime subscription for user posts
     if (userId) {
       const channel = supabase
         .channel('profile-posts-channel')
@@ -138,6 +137,44 @@ const Profile = () => {
     toast.info("Ticket History feature will be implemented soon");
     // Navigate to ticket history page when implemented
     // navigate("/ticket-history");
+  };
+
+  const renderPostsGrid = () => {
+    if (loadingPosts) {
+      return (
+        <div className="flex justify-center items-center py-8">
+          <p className="text-gray-500">Loading posts...</p>
+        </div>
+      );
+    }
+
+    if (posts.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center h-48 text-gray-500 font-medium">
+          No posts yet. Go to the Track!
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-3 gap-1">
+        {posts.map((post) => (
+          <div 
+            key={post.id} 
+            className="aspect-square overflow-hidden bg-gray-100"
+            onClick={() => {
+              toast.info("Post view feature will be implemented soon");
+            }}
+          >
+            <img 
+              src={post.image_url} 
+              alt="" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+      </div>
+    );
   };
 
   const renderUserPosts = () => {
@@ -207,7 +244,6 @@ const Profile = () => {
             </div>
           </div>
 
-          {/* Business Location - Moved above Tickets Sold */}
           <div className="space-y-4 mb-6">
             <div className="bg-gray-100 rounded-lg p-4">
               <h3 className="font-medium mb-2 text-black">Location</h3>
@@ -215,7 +251,6 @@ const Profile = () => {
             </div>
           </div>
 
-          {/* Tickets Sold Section */}
           <div className="space-y-4 mb-6">
             <div className="flex justify-between items-center">
               <span className="text-lg font-medium text-black">Tickets Sold</span>
@@ -234,7 +269,6 @@ const Profile = () => {
             </div>
           </div>
 
-          {/* Create Event Button */}
           <div className="mb-6">
             <Button className="w-full bg-blue-600 hover:bg-blue-700">
               CREATE EVENT
@@ -257,8 +291,8 @@ const Profile = () => {
               <Timer className="w-5 h-5" />
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="posts" className="max-w-md mx-auto p-4">
-            {renderUserPosts()}
+          <TabsContent value="posts" className="max-w-md mx-auto">
+            {renderPostsGrid()}
           </TabsContent>
           <TabsContent value="events" className="max-w-md mx-auto p-4">
             <div className="flex flex-col items-center justify-center h-48 gap-4">
@@ -295,7 +329,6 @@ const Profile = () => {
             </div>
           </div>
 
-          {/* Trophies Section */}
           <div className="space-y-4 mb-6">
             <Button 
               variant="ghost" 
@@ -307,7 +340,6 @@ const Profile = () => {
             </Button>
           </div>
 
-          {/* Primary Vehicle */}
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <span className="text-lg text-black">Primary Vehicle</span>
@@ -338,8 +370,8 @@ const Profile = () => {
               <Timer className="w-5 h-5" />
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="posts" className="max-w-md mx-auto p-4">
-            {renderUserPosts()}
+          <TabsContent value="posts" className="max-w-md mx-auto">
+            {renderPostsGrid()}
           </TabsContent>
           <TabsContent value="laptimes" className="max-w-md mx-auto p-4">
             <div className="flex flex-col items-center justify-center h-48 gap-4">
