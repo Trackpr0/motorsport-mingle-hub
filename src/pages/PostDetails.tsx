@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import LocationInput from "@/components/LocationInput";
 
 interface PostDetailsProps {}
 
@@ -69,11 +70,9 @@ const PostDetails = ({}: PostDetailsProps) => {
         {/* Location Input - For geolocation */}
         <div className="bg-gray-50 p-4 rounded-md">
           <label className="text-blue-600 font-medium block mb-2">Location</label>
-          <Input 
-            placeholder="Enter city, state, or location..." 
+          <LocationInput 
             value={locationText}
-            onChange={(e) => setLocationText(e.target.value)}
-            className="border-none bg-transparent placeholder:text-gray-400 focus-visible:ring-0 text-black"
+            onChange={setLocationText}
           />
         </div>
         
