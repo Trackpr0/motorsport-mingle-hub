@@ -67,11 +67,11 @@ const CreateEvent = () => {
           variant="ghost" 
           size="icon"
           onClick={handleGoBack}
-          className="mr-2"
+          className="mr-auto"
         >
           <ChevronLeft className="h-6 w-6" />
         </Button>
-        <h1 className="text-xl font-bold flex-1 text-center pr-8">Add Item</h1>
+        <h1 className="text-xl font-bold mr-auto">Add Item</h1>
       </div>
       
       <div className="flex-1 p-4 space-y-4">
