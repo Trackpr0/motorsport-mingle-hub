@@ -98,7 +98,7 @@ const CreateEvent = () => {
                   onChange={() => handleLevelToggle(level.id)}
                   className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
-                <label htmlFor={`level-${level.id}`} className="ml-2">
+                <label htmlFor={`level-${level.id}`} className="ml-2 text-black">
                   {level.name}
                 </label>
               </div>
