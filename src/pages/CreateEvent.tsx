@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -117,7 +118,7 @@ const CreateEvent = () => {
               <Switch 
                 checked={membersOnly} 
                 onCheckedChange={setMembersOnly} 
-                className={membersOnly ? "bg-blue-600" : "bg-gray-300"}
+                className={membersOnly ? "bg-blue-600" : "bg-gray-200"}
               />
             </div>
           </div>
