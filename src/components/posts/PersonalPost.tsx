@@ -1,5 +1,5 @@
 
-import { Heart, MessageCircle, Share2 } from "lucide-react";
+import { Heart, MessageCircle, Share2, User } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
 interface PersonalPostProps {
@@ -26,7 +26,7 @@ const PersonalPost = ({
               <AvatarImage src={avatarUrl} alt={name} />
             ) : (
               <AvatarFallback className="bg-gray-200">
-                {name.charAt(0)}
+                <User className="w-6 h-6 text-gray-400" />
               </AvatarFallback>
             )}
           </Avatar>
