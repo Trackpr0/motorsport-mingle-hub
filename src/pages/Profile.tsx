@@ -7,6 +7,8 @@ import FooterNav from "@/components/navigation/FooterNav";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import BusinessPost from "@/components/posts/BusinessPost";
+import PersonalPost from "@/components/posts/PersonalPost";
 
 const Profile = () => {
   const [username, setUsername] = useState<string>("Loading...");
@@ -14,6 +16,9 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [userType, setUserType] = useState<string>("enthusiast");
   const [businessName, setBusinessName] = useState<string>("");
+  const [userId, setUserId] = useState<string | null>(null);
+  const [posts, setPosts] = useState<any[]>([]);
+  const [loadingPosts, setLoadingPosts] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +28,8 @@ const Profile = () => {
         const { data: { session } } = await supabase.auth.getSession();
         
         if (session) {
+          setUserId(session.user.id);
+          
           const { data, error } = await supabase
             .from('enthusiast_profiles')
             .select('username, avatar_url, user_type, first_name')
@@ -52,6 +59,63 @@ const Profile = () => {
     fetchProfile();
   }, []);
 
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      if (!userId) return;
+      
+      try {
+        setLoadingPosts(true);
+        const { data, error } = await supabase
+          .from('posts')
+          .select(`
+            *,
+            enthusiast_profiles (
+              username,
+              full_name,
+              avatar_url
+            )
+          `)
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false });
+        
+        if (error) {
+          console.error('Error fetching user posts:', error);
+          toast.error('Could not load posts');
+        } else if (data) {
+          setPosts(data);
+        }
+      } catch (error) {
+        console.error('Unexpected error fetching posts:', error);
+      } finally {
+        setLoadingPosts(false);
+      }
+    };
+
+    fetchUserPosts();
+    
+    // Set up realtime subscription for user posts
+    if (userId) {
+      const channel = supabase
+        .channel('profile-posts-channel')
+        .on('postgres_changes', 
+          { 
+            event: 'INSERT', 
+            schema: 'public', 
+            table: 'posts',
+            filter: `user_id=eq.${userId}`
+          }, 
+          (payload) => {
+            setPosts(current => [payload.new, ...current]);
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, [userId]);
+
   const handleSettingsClick = () => {
     toast.info("Settings clicked");
     // Navigate to settings page when implemented
@@ -74,6 +138,51 @@ const Profile = () => {
     toast.info("Ticket History feature will be implemented soon");
     // Navigate to ticket history page when implemented
     // navigate("/ticket-history");
+  };
+
+  const renderUserPosts = () => {
+    if (loadingPosts) {
+      return (
+        <div className="flex justify-center items-center py-8">
+          <p className="text-gray-500">Loading posts...</p>
+        </div>
+      );
+    }
+
+    if (posts.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center h-48 text-gray-500 font-medium">
+          No posts yet. Go to the Track!
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-6">
+        {posts.map((post) => (
+          post.type === "business" ? (
+            <BusinessPost
+              key={post.id}
+              name={post.enthusiast_profiles?.full_name || post.enthusiast_profiles?.username || "Business Account"}
+              location={post.location || ""}
+              rating={4.5}
+              imageUrl={post.image_url}
+              description={post.caption || ""}
+              hasEvent={post.has_event}
+              profileId={post.user_id}
+            />
+          ) : (
+            <PersonalPost
+              key={post.id}
+              name={post.enthusiast_profiles?.username || post.enthusiast_profiles?.full_name || "Personal Account"}
+              imageUrl={post.image_url}
+              description={post.caption || ""}
+              profileId={post.user_id}
+            />
+          )
+        ))}
+      </div>
+    );
   };
 
   const renderBusinessProfile = () => {
@@ -149,9 +258,7 @@ const Profile = () => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="posts" className="max-w-md mx-auto p-4">
-            <div className="flex flex-col items-center justify-center h-48 text-gray-500 font-medium">
-              Go to the Track
-            </div>
+            {renderUserPosts()}
           </TabsContent>
           <TabsContent value="events" className="max-w-md mx-auto p-4">
             <div className="flex flex-col items-center justify-center h-48 gap-4">
@@ -232,9 +339,7 @@ const Profile = () => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="posts" className="max-w-md mx-auto p-4">
-            <div className="flex flex-col items-center justify-center h-48 text-gray-500 font-medium">
-              Go to the Track
-            </div>
+            {renderUserPosts()}
           </TabsContent>
           <TabsContent value="laptimes" className="max-w-md mx-auto p-4">
             <div className="flex flex-col items-center justify-center h-48 gap-4">
