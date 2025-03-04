@@ -57,7 +57,7 @@ const CreateEvent = () => {
   };
   
   const handleGoBack = () => {
-    navigate(-1);
+    navigate("/profile");
   };
 
   return (
