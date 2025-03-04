@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import PostsGrid from "./PostsGrid";
+import { useNavigate } from "react-router-dom";
 
 interface BusinessProfileProps {
   isLoading: boolean;
@@ -12,7 +13,7 @@ interface BusinessProfileProps {
   avatarUrl: string | null;
   posts: any[];
   loadingPosts: boolean;
-  isOwnProfile?: boolean; // New prop to determine if this is the user's own profile
+  isOwnProfile?: boolean;
   userId?: string | null;
 }
 
@@ -22,13 +23,19 @@ const BusinessProfile = ({
   avatarUrl, 
   posts,
   loadingPosts,
-  isOwnProfile = false, // Default to false for safety
+  isOwnProfile = false,
   userId
 }: BusinessProfileProps) => {
+  const navigate = useNavigate();
+  
   const handleTicketHistoryClick = () => {
     toast.info("Ticket History feature will be implemented soon");
     // Navigate to ticket history page when implemented
     // navigate("/ticket-history");
+  };
+  
+  const handleCreateEventClick = () => {
+    navigate("/create-event");
   };
 
   return (
@@ -83,7 +90,10 @@ const BusinessProfile = ({
 
         {isOwnProfile && (
           <div className="mb-6">
-            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+            <Button 
+              className="w-full bg-blue-600 hover:bg-blue-700"
+              onClick={handleCreateEventClick}
+            >
               CREATE EVENT
             </Button>
           </div>
@@ -112,7 +122,11 @@ const BusinessProfile = ({
           <div className="flex flex-col items-center justify-center h-48 gap-4">
             <Timer className="w-12 h-12 text-gray-400" />
             {isOwnProfile && (
-              <Button size="lg" className="rounded-full bg-blue-600 hover:bg-blue-700">
+              <Button 
+                size="lg" 
+                className="rounded-full bg-blue-600 hover:bg-blue-700"
+                onClick={handleCreateEventClick}
+              >
                 +
               </Button>
             )}
