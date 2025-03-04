@@ -1,21 +1,14 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ChevronLeft, Minus, Plus } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { 
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { toast } from "sonner";
+import EventHeader from "@/components/event/EventHeader";
+import TitleInput from "@/components/event/TitleInput";
+import LevelSelector from "@/components/event/LevelSelector";
+import ActionButtons from "@/components/event/ActionButtons";
+import { Level } from "@/components/event/LevelSelector";
 
-const levels = [
+const levels: Level[] = [
   { id: 1, name: "Level 1" },
   { id: 2, name: "Level 2" },
   { id: 3, name: "Level 3" },
@@ -67,15 +60,15 @@ const CreateEvent = () => {
     });
   };
   
-  const handleSaveAndConfirm = () => {
+  const validateForm = () => {
     if (!title.trim()) {
       toast.error("Please enter a title");
-      return;
+      return false;
     }
     
     if (selectedLevels.length === 0) {
       toast.error("Please select at least one level");
-      return;
+      return false;
     }
 
     const missingPrices = selectedLevels.some(levelId => 
@@ -84,11 +77,17 @@ const CreateEvent = () => {
     
     if (missingPrices) {
       toast.error("Please enter prices for all selected levels");
-      return;
+      return false;
     }
     
-    toast.success("Inventory item created successfully!");
-    navigate("/profile");
+    return true;
+  };
+  
+  const handleSaveAndContinue = () => {
+    if (validateForm()) {
+      toast.success("Inventory item created successfully!");
+      navigate("/profile");
+    }
   };
   
   const handleGoBack = () => {
@@ -97,126 +96,29 @@ const CreateEvent = () => {
 
   return (
     <div className="min-h-screen bg-[#F8F9FE] flex flex-col">
-      <div className="bg-white p-4 flex items-center">
-        <Button 
-          variant="ghost" 
-          size="icon"
-          onClick={handleGoBack}
-          className="mr-auto"
-        >
-          <ChevronLeft className="h-6 w-6" />
-        </Button>
-        <h1 className="text-xl font-bold mr-auto">Inventory Creation</h1>
-      </div>
+      <EventHeader onGoBack={handleGoBack} />
       
       <div className="flex-1 p-4 space-y-4">
-        <div className="bg-white rounded-lg p-6 shadow-sm">
-          <div className="flex justify-between items-center">
-            <label className="block text-blue-600 font-medium">Title Name</label>
-            <div className="flex items-center space-x-2">
-              <span className={membersOnly ? "text-black" : "text-gray-500"}>Members Only</span>
-              <Switch 
-                checked={membersOnly} 
-                onCheckedChange={setMembersOnly} 
-                className={membersOnly ? "bg-blue-600" : "bg-gray-200"}
-              />
-            </div>
-          </div>
-          <Input 
-            placeholder="Enter Here" 
-            value={title}
-            onChange={handleTitleChange}
-            className="w-full bg-white text-black border-gray-300 mt-2"
-          />
-        </div>
+        <TitleInput 
+          title={title}
+          membersOnly={membersOnly}
+          onTitleChange={handleTitleChange}
+          onMembersOnlyChange={setMembersOnly}
+        />
         
-        <div className="bg-white rounded-lg p-6 shadow-sm">
-          <label className="block text-blue-600 font-medium mb-4">Select # of Levels</label>
-          
-          <div className="space-y-6">
-            {levels.map((level) => (
-              <div key={level.id} className="space-y-4">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id={`level-${level.id}`}
-                    checked={selectedLevels.includes(level.id)}
-                    onChange={() => handleLevelToggle(level.id)}
-                    className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                  />
-                  <label htmlFor={`level-${level.id}`} className="ml-2 text-black">
-                    {level.name}
-                  </label>
-                </div>
-                
-                {selectedLevels.includes(level.id) && (
-                  <div className="pl-7 space-y-4">
-                    <div>
-                      <label className="block text-gray-600 text-sm mb-1">
-                        Price per ticket (in $)
-                      </label>
-                      <Input 
-                        type="text"
-                        placeholder="0.00"
-                        value={levelData[level.id]?.price || ""}
-                        onChange={(e) => handlePriceChange(level.id, e.target.value)}
-                        className="bg-white border-gray-300"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="block text-gray-600 text-sm mb-1">
-                        # of Tickets for Purchase
-                      </label>
-                      <div className="flex items-center space-x-3">
-                        <Button 
-                          variant="outline" 
-                          size="icon" 
-                          className="rounded-full h-8 w-8"
-                          onClick={() => handleQuantityChange(level.id, -1)}
-                        >
-                          <Minus className="h-4 w-4" />
-                        </Button>
-                        
-                        <span className="text-center w-8">
-                          {levelData[level.id]?.quantity || 1}
-                        </span>
-                        
-                        <Button 
-                          variant="outline" 
-                          size="icon" 
-                          className="rounded-full h-8 w-8"
-                          onClick={() => handleQuantityChange(level.id, 1)}
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                
-                {selectedLevels.includes(level.id) && level.id !== levels[levels.length - 1].id && (
-                  <div className="border-b border-gray-200 my-4"></div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+        <LevelSelector 
+          levels={levels}
+          selectedLevels={selectedLevels}
+          levelData={levelData}
+          onLevelToggle={handleLevelToggle}
+          onPriceChange={handlePriceChange}
+          onQuantityChange={handleQuantityChange}
+        />
         
-        <Button 
-          variant="outline" 
-          className="w-full bg-white border-blue-600 text-blue-600 hover:bg-blue-50"
-          onClick={handleSaveAndConfirm}
-        >
-          Add Inventory
-        </Button>
-
-        <Button 
-          className="w-full bg-blue-600 text-white hover:bg-blue-700"
-          onClick={handleSaveAndConfirm}
-        >
-          Save & Continue
-        </Button>
+        <ActionButtons 
+          onAddInventory={handleSaveAndContinue}
+          onSaveAndContinue={handleSaveAndContinue}
+        />
       </div>
     </div>
   );
