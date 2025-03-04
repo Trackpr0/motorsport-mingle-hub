@@ -25,6 +25,14 @@ const LevelItem = ({
   onPriceChange,
   onQuantityChange
 }: LevelItemProps) => {
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Only allow numbers, comma, and dot in the price field
+    const value = e.target.value;
+    if (value === '' || /^[0-9.,]+$/.test(value)) {
+      onPriceChange(levelId, value);
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center">
@@ -50,8 +58,8 @@ const LevelItem = ({
               type="text"
               placeholder="0.00"
               value={priceValue}
-              onChange={(e) => onPriceChange(levelId, e.target.value)}
-              className="bg-white border-gray-300"
+              onChange={handlePriceChange}
+              className="bg-white border-gray-300 text-black"
             />
           </div>
           
