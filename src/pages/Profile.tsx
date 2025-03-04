@@ -15,7 +15,8 @@ const Profile = () => {
     userType,
     businessName,
     posts,
-    loadingPosts
+    loadingPosts,
+    userId
   } = useProfileData();
 
   return (
@@ -29,6 +30,8 @@ const Profile = () => {
           avatarUrl={avatarUrl}
           posts={posts}
           loadingPosts={loadingPosts}
+          isOwnProfile={true} // Since this is the user's own profile page
+          userId={userId}
         />
       ) : (
         <EnthusiastProfile

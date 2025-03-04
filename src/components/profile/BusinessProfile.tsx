@@ -12,6 +12,8 @@ interface BusinessProfileProps {
   avatarUrl: string | null;
   posts: any[];
   loadingPosts: boolean;
+  isOwnProfile?: boolean; // New prop to determine if this is the user's own profile
+  userId?: string | null;
 }
 
 const BusinessProfile = ({ 
@@ -19,7 +21,9 @@ const BusinessProfile = ({
   businessName, 
   avatarUrl, 
   posts,
-  loadingPosts 
+  loadingPosts,
+  isOwnProfile = false, // Default to false for safety
+  userId
 }: BusinessProfileProps) => {
   const handleTicketHistoryClick = () => {
     toast.info("Ticket History feature will be implemented soon");
@@ -44,7 +48,9 @@ const BusinessProfile = ({
             <h2 className="text-xl font-semibold text-black">
               {isLoading ? "Loading..." : businessName}
             </h2>
-            <Button className="bg-blue-600 hover:bg-blue-700">EDIT PROFILE</Button>
+            {isOwnProfile && (
+              <Button className="bg-blue-600 hover:bg-blue-700">EDIT PROFILE</Button>
+            )}
           </div>
         </div>
 
@@ -58,13 +64,15 @@ const BusinessProfile = ({
         <div className="space-y-4 mb-6">
           <div className="flex justify-between items-center">
             <span className="text-lg font-medium text-black">Tickets Sold</span>
-            <Button 
-              variant="link" 
-              className="text-blue-600 p-0 flex items-center" 
-              onClick={handleTicketHistoryClick}
-            >
-              Ticket History <ChevronRight className="w-4 h-4" />
-            </Button>
+            {isOwnProfile && (
+              <Button 
+                variant="link" 
+                className="text-blue-600 p-0 flex items-center" 
+                onClick={handleTicketHistoryClick}
+              >
+                Ticket History <ChevronRight className="w-4 h-4" />
+              </Button>
+            )}
           </div>
           <div className="bg-gray-100 rounded-lg p-4">
             <div className="flex flex-col items-center justify-center text-gray-400">
@@ -73,11 +81,13 @@ const BusinessProfile = ({
           </div>
         </div>
 
-        <div className="mb-6">
-          <Button className="w-full bg-blue-600 hover:bg-blue-700">
-            CREATE EVENT
-          </Button>
-        </div>
+        {isOwnProfile && (
+          <div className="mb-6">
+            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+              CREATE EVENT
+            </Button>
+          </div>
+        )}
       </div>
 
       <Tabs defaultValue="posts" className="w-full mt-6">
@@ -101,9 +111,11 @@ const BusinessProfile = ({
         <TabsContent value="events" className="max-w-md mx-auto p-4">
           <div className="flex flex-col items-center justify-center h-48 gap-4">
             <Timer className="w-12 h-12 text-gray-400" />
-            <Button size="lg" className="rounded-full bg-blue-600 hover:bg-blue-700">
-              +
-            </Button>
+            {isOwnProfile && (
+              <Button size="lg" className="rounded-full bg-blue-600 hover:bg-blue-700">
+                +
+              </Button>
+            )}
           </div>
         </TabsContent>
       </Tabs>
