@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -109,15 +108,9 @@ const CreateEvent = () => {
         <Button 
           variant="outline" 
           className="w-full bg-white border-blue-600 text-blue-600 hover:bg-blue-50"
-        >
-          Save & Add New Inventory Item
-        </Button>
-        
-        <Button 
-          className="w-full bg-blue-600 hover:bg-blue-700"
           onClick={handleSaveAndConfirm}
         >
-          Save & Confirm
+          Add Inventory
         </Button>
       </div>
     </div>
