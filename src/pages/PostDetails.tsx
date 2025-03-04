@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { ArrowLeft, Check, ChevronDown } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,7 +14,6 @@ const PostDetails = ({}: PostDetailsProps) => {
   const [caption, setCaption] = useState("");
   const [locationText, setLocationText] = useState("");
   
-  // Get the selectedImage from the location state
   const selectedImage = location.state?.selectedImage;
 
   const handleBack = () => {
@@ -23,31 +21,26 @@ const PostDetails = ({}: PostDetailsProps) => {
   };
 
   const handleConfirmPost = () => {
-    // In a real app, this would submit the post to a backend
     toast.success("Post created successfully!");
     navigate("/home");
   };
 
   if (!selectedImage) {
-    // If no image is selected, go back to create post
     navigate("/create-post");
     return null;
   }
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Header */}
       <div className="flex justify-between items-center p-4 border-b">
         <button onClick={handleBack} className="text-black">
           <ArrowLeft size={24} />
         </button>
         <h1 className="text-lg font-semibold">Post Details</h1>
-        <div className="w-8"></div> {/* Spacer for alignment */}
+        <div className="w-8"></div>
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 flex flex-col p-4 space-y-4">
-        {/* Selected Image Preview */}
         <div className="w-full aspect-video bg-gray-100 flex items-center justify-center overflow-hidden rounded-md">
           <img 
             src={selectedImage} 
@@ -56,7 +49,6 @@ const PostDetails = ({}: PostDetailsProps) => {
           />
         </div>
         
-        {/* Caption Input */}
         <div className="bg-gray-50 p-4 rounded-md">
           <label className="text-blue-600 font-medium block mb-2">Caption</label>
           <Input 
@@ -67,18 +59,15 @@ const PostDetails = ({}: PostDetailsProps) => {
           />
         </div>
         
-        {/* Location Input - For geolocation */}
         <div className="bg-gray-50 p-4 rounded-md">
           <label className="text-blue-600 font-medium block mb-2">Location</label>
           <LocationInput 
             value={locationText}
             onChange={setLocationText}
-            // You can provide a custom token here if needed
-            // mapboxToken="YOUR_MAPBOX_TOKEN"
+            mapboxToken="pk.eyJ1IjoidHJhY2todWJsbGMiLCJhIjoiY203dHozcWd4MGN0ejJqcHFwNDBzd3l5OCJ9.QFkcZKkOyJzECS5PwYzT7Q"
           />
         </div>
         
-        {/* Trackday Event Dropdown - Will show business created events */}
         <div className="bg-gray-50 p-4 rounded-md">
           <label className="text-blue-600 font-medium block mb-2">
             Attach Trackday Event (Optional)
@@ -89,7 +78,6 @@ const PostDetails = ({}: PostDetailsProps) => {
           </button>
         </div>
         
-        {/* Confirm Button */}
         <div className="mt-auto pt-4">
           <Button 
             onClick={handleConfirmPost}
