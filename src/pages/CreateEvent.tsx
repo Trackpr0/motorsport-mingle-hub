@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -38,7 +37,6 @@ const CreateEvent = () => {
       if (prev.includes(levelId)) {
         return prev.filter(id => id !== levelId);
       } else {
-        // Initialize price and inventory when a level is selected
         if (!levelData[levelId]) {
           setLevelData(prev => ({
             ...prev,
@@ -60,7 +58,7 @@ const CreateEvent = () => {
   const handleQuantityChange = (levelId: number, change: number) => {
     setLevelData(prev => {
       const currentQuantity = prev[levelId]?.quantity || 1;
-      const newQuantity = Math.max(1, currentQuantity + change); // Ensure quantity is at least 1
+      const newQuantity = Math.max(1, currentQuantity + change);
       return {
         ...prev,
         [levelId]: { ...prev[levelId], quantity: newQuantity }
@@ -79,7 +77,6 @@ const CreateEvent = () => {
       return;
     }
 
-    // Validate that all selected levels have prices
     const missingPrices = selectedLevels.some(levelId => 
       !levelData[levelId]?.price || levelData[levelId]?.price.trim() === ""
     );
@@ -89,7 +86,6 @@ const CreateEvent = () => {
       return;
     }
     
-    // Here we would typically save the event data including prices and quantities
     toast.success("Inventory item created successfully!");
     navigate("/profile");
   };
