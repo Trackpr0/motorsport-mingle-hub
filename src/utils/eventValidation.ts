@@ -44,7 +44,7 @@ export const validateEventForm = ({
   return true;
 };
 
-// New function to validate the event details form
+// Updated function to validate the event details form
 export const validateEventDetailsForm = ({
   eventName,
   selectedDate,

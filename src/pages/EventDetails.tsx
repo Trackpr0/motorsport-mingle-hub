@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Calendar, ChevronDown } from "lucide-react";
@@ -14,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { validateEventDetailsForm } from "@/utils/eventValidation";
 
 const EventDetails = () => {
   const navigate = useNavigate();
@@ -22,7 +24,9 @@ const EventDetails = () => {
   
   const [eventName, setEventName] = useState("");
   const [eventLocation, setEventLocation] = useState("");
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [isMultiDay, setIsMultiDay] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [eventImage, setEventImage] = useState<string | null>(null);
@@ -93,8 +97,33 @@ const EventDetails = () => {
   };
   
   const handleDateSelection = (day: any) => {
-    if (day.current) {
-      setSelectedDate(new Date(day.year, day.month, day.day));
+    if (!day.current) return;
+    
+    const selectedDate = new Date(day.year, day.month, day.day);
+    
+    if (!isMultiDay) {
+      // Single day selection
+      setStartDate(selectedDate);
+      setEndDate(null);
+    } else {
+      // Multi-day selection
+      if (!startDate) {
+        // First selection sets start date
+        setStartDate(selectedDate);
+      } else if (!endDate) {
+        // Second selection sets end date
+        if (selectedDate < startDate) {
+          // If selected date is before start date, swap them
+          setEndDate(startDate);
+          setStartDate(selectedDate);
+        } else {
+          setEndDate(selectedDate);
+        }
+      } else {
+        // Reset selection if both dates are already set
+        setStartDate(selectedDate);
+        setEndDate(null);
+      }
     }
   };
   
@@ -148,18 +177,14 @@ const EventDetails = () => {
   };
   
   const handleCreateEvent = async () => {
-    if (!eventName.trim()) {
-      toast.error("Please enter an event name");
-      return;
-    }
+    if (!validateEventDetailsForm({
+      eventName,
+      selectedDate: startDate,
+      eventLocation
+    })) return;
     
-    if (!selectedDate) {
-      toast.error("Please select a date");
-      return;
-    }
-    
-    if (!eventLocation) {
-      toast.error("Please enter an event location");
+    if (isMultiDay && !endDate) {
+      toast.error("Please select both start and end dates for multi-day events");
       return;
     }
     
@@ -201,7 +226,9 @@ const EventDetails = () => {
       const completeEventData = {
         ...eventData,
         event_name: eventName,
-        event_date: selectedDate.toISOString(),
+        event_date: startDate?.toISOString(),
+        event_end_date: endDate ? endDate.toISOString() : null,
+        is_multi_day: isMultiDay && endDate !== null,
         location: eventLocation,
         user_id: session.user.id,
         image_url: imageUrl
@@ -225,13 +252,23 @@ const EventDetails = () => {
     }
   };
   
-  const isDateSelected = (day: any) => {
-    if (!selectedDate || !day.current) return false;
-    return (
-      selectedDate.getDate() === day.day &&
-      selectedDate.getMonth() === day.month &&
-      selectedDate.getFullYear() === day.year
-    );
+  const isDateInRange = (day: any) => {
+    if (!day.current) return false;
+    if (!startDate) return false;
+    
+    const date = new Date(day.year, day.month, day.day);
+    
+    if (!isMultiDay || !endDate) {
+      // Single day selection
+      return (
+        startDate.getDate() === day.day &&
+        startDate.getMonth() === day.month &&
+        startDate.getFullYear() === day.year
+      );
+    } else {
+      // Multi-day selection - check if date is within range (inclusive)
+      return date >= startDate && date <= endDate;
+    }
   };
 
   return (
@@ -250,7 +287,18 @@ const EventDetails = () => {
         </div>
         
         <div className="bg-white rounded-lg p-6 shadow-sm">
-          <h2 className="text-blue-600 font-medium mb-4">Select Day(s)</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-blue-600 font-medium">Select Day(s)</h2>
+            <div className="flex items-center">
+              <label className="text-sm mr-2">Multi-day event</label>
+              <input 
+                type="checkbox" 
+                checked={isMultiDay}
+                onChange={(e) => setIsMultiDay(e.target.checked)}
+                className="rounded text-blue-600 focus:ring-blue-500"
+              />
+            </div>
+          </div>
           
           <div className="flex justify-between items-center mb-4">
             <button 
@@ -318,13 +366,29 @@ const EventDetails = () => {
                 className={`p-2 cursor-pointer ${
                   day.current ? "text-black" : "text-gray-400"
                 } ${
-                  isDateSelected(day) ? "bg-blue-600 text-white rounded-full" : ""
+                  isDateInRange(day) ? "bg-blue-600 text-white rounded-full" : ""
                 }`}
               >
                 {day.day}
               </div>
             ))}
           </div>
+          
+          {isMultiDay && (
+            <div className="mt-4 text-sm">
+              {startDate && endDate ? (
+                <p className="text-blue-600">
+                  Selected: {startDate.toLocaleDateString()} - {endDate.toLocaleDateString()}
+                </p>
+              ) : startDate ? (
+                <p className="text-blue-600">
+                  Start date: {startDate.toLocaleDateString()} - Please select end date
+                </p>
+              ) : (
+                <p className="text-blue-600">Please select start date</p>
+              )}
+            </div>
+          )}
         </div>
         
         <div className="bg-white rounded-lg p-6 shadow-sm">
