@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import EventHeader from "@/components/event/EventHeader";
@@ -101,7 +102,7 @@ const EventDetails = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-blue-600 font-medium">Select Day(s)</h2>
             <div className="flex items-center">
-              <label className="text-sm mr-2">Multi-day event</label>
+              <label className="text-blue-600 font-medium mr-2">Multi-day event</label>
               <input 
                 type="checkbox" 
                 checked={isMultiDay}
