@@ -44,6 +44,7 @@ export default function App() {
               <Route path="/manage-memberships" element={<ManageMemberships />} />
               <Route path="/membership/:membershipId/members" element={<MembershipMembers />} />
               <Route path="/memberships" element={<BrowseMemberships />} />
+              <Route path="/tickets" element={<Index />} /> {/* Temporarily point to Index until we create a Tickets page */}
               <Route path="*" element={<Login />} />
             </Routes>
           </Router>

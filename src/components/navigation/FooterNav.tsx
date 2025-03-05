@@ -1,6 +1,7 @@
+
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Search, User, Star } from "lucide-react";
+import { Home, Search, User, Plus, Ticket } from "lucide-react";
 
 const FooterNav = () => {
   const location = useLocation();
@@ -16,12 +17,14 @@ const FooterNav = () => {
           <Search className="h-6 w-6 mb-1" />
           Search
         </Link>
-        {localStorage.getItem('userType') !== 'business' && (
-          <Link to="/memberships" className={`flex flex-col items-center ${location.pathname === '/memberships' ? 'text-blue-600' : 'text-gray-500'}`}>
-            <Star className="h-6 w-6 mb-1" />
-            Memberships
-          </Link>
-        )}
+        <Link to="/create-post" className={`flex flex-col items-center ${location.pathname === '/create-post' ? 'text-blue-600' : 'text-gray-500'}`}>
+          <Plus className="h-6 w-6 mb-1" />
+          Post
+        </Link>
+        <Link to="/tickets" className={`flex flex-col items-center ${location.pathname === '/tickets' ? 'text-blue-600' : 'text-gray-500'}`}>
+          <Ticket className="h-6 w-6 mb-1" />
+          Tickets
+        </Link>
         <Link to="/profile" className={`flex flex-col items-center ${location.pathname === '/profile' ? 'text-blue-600' : 'text-gray-500'}`}>
           <User className="h-6 w-6 mb-1" />
           Profile
