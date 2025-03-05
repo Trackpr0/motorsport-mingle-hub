@@ -224,7 +224,7 @@ const EventDetails = () => {
         </div>
         
         <div className="bg-white rounded-lg p-6 shadow-sm">
-          <h2 className="text-blue-600 font-medium mb-4">Select Day 1</h2>
+          <h2 className="text-blue-600 font-medium mb-4">Select Day(s)</h2>
           
           <div className="flex justify-between items-center mb-4">
             <button 
