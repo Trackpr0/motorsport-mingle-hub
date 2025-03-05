@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import EventHeader from "@/components/event/EventHeader";
 import { Button } from "@/components/ui/button";
 import LocationInput from "@/components/LocationInput";
+import { EventImageUpload } from "@/components/event/EventImageUpload";
 
 const EventDetails = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const EventDetails = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [loading, setLoading] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [eventImage, setEventImage] = useState<string | null>(null);
   
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
@@ -102,6 +104,23 @@ const EventDetails = () => {
     });
   };
   
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files || event.target.files.length === 0) {
+      return;
+    }
+    
+    const file = event.target.files[0];
+    const fileReader = new FileReader();
+    
+    fileReader.onload = (e) => {
+      if (e.target?.result) {
+        setEventImage(e.target.result as string);
+      }
+    };
+    
+    fileReader.readAsDataURL(file);
+  };
+  
   const handleCreateEvent = async () => {
     if (!eventName.trim()) {
       toast.error("Please enter an event name");
@@ -126,12 +145,40 @@ const EventDetails = () => {
         return;
       }
       
+      let imageUrl = null;
+      
+      if (eventImage) {
+        const base64Data = eventImage.split(',')[1];
+        const filename = `event_${Date.now()}.jpg`;
+        
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('event_images')
+          .upload(filename, base64Data, {
+            contentType: 'image/jpeg',
+            upsert: false
+          });
+          
+        if (uploadError) {
+          console.error("Error uploading image:", uploadError);
+          toast.error("Failed to upload image");
+          setLoading(false);
+          return;
+        }
+        
+        const { data: { publicUrl } } = supabase.storage
+          .from('event_images')
+          .getPublicUrl(filename);
+          
+        imageUrl = publicUrl;
+      }
+      
       const completeEventData = {
         ...eventData,
         event_name: eventName,
         event_date: selectedDate.toISOString(),
         location: eventLocation,
         user_id: session.user.id,
+        image_url: imageUrl
       };
       
       const { data, error } = await supabase
@@ -168,13 +215,11 @@ const EventDetails = () => {
       <div className="flex-1 p-4 space-y-4">
         <div className="bg-white rounded-lg p-6 shadow-sm">
           <h2 className="text-blue-600 font-medium mb-2">Event Image</h2>
-          <div className="flex items-center justify-center bg-blue-100 rounded-lg h-32 text-center">
-            <div className="text-center">
-              <div className="bg-blue-200 rounded-lg p-4 inline-block">
-                <Calendar className="h-8 w-8 text-blue-600" />
-              </div>
-              <p className="mt-2 text-gray-500">Add Image</p>
-            </div>
+          <div className="flex items-center justify-center bg-blue-100 rounded-lg h-32 text-center overflow-hidden">
+            <EventImageUpload 
+              imageUrl={eventImage}
+              onFileChange={handleFileChange}
+            />
           </div>
         </div>
         
@@ -250,7 +295,7 @@ const EventDetails = () => {
           onClick={handleCreateEvent}
           disabled={loading}
         >
-          Create Event
+          {loading ? "Creating..." : "Create Event"}
         </Button>
       </div>
     </div>
