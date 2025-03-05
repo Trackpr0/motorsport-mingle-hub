@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Calendar, ChevronDown } from "lucide-react";
@@ -266,7 +265,7 @@ const EventDetails = () => {
                 value={currentMonth.getMonth().toString()}
                 onValueChange={handleMonthChange}
               >
-                <SelectTrigger className="h-auto py-0 px-1 border-0 bg-transparent focus:ring-0 focus:ring-offset-0 shadow-none font-medium text-blue-600">
+                <SelectTrigger className="h-auto py-0 px-1 border-0 bg-transparent focus:ring-0 focus:ring-offset-0 shadow-none font-medium text-blue-600 [&>svg]:hidden">
                   <SelectValue placeholder="Month" />
                 </SelectTrigger>
                 <SelectContent>
@@ -282,7 +281,7 @@ const EventDetails = () => {
                 value={currentMonth.getFullYear().toString()}
                 onValueChange={handleYearChange}
               >
-                <SelectTrigger className="h-auto py-0 px-1 border-0 bg-transparent focus:ring-0 focus:ring-offset-0 shadow-none font-medium text-blue-600">
+                <SelectTrigger className="h-auto py-0 px-1 border-0 bg-transparent focus:ring-0 focus:ring-offset-0 shadow-none font-medium text-blue-600 [&>svg]:hidden">
                   <SelectValue placeholder="Year" />
                 </SelectTrigger>
                 <SelectContent>
