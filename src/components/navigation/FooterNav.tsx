@@ -13,9 +13,9 @@ const FooterNav = () => {
           <Home className="h-6 w-6 mb-1" />
           <span className="text-xs">Home</span>
         </Link>
-        <Link to="/search" className={`flex flex-col items-center ${location.pathname === '/search' ? 'text-blue-600' : 'text-gray-500'}`}>
-          <Search className="h-6 w-6 mb-1" />
-          <span className="text-xs">Search</span>
+        <Link to="/tickets" className={`flex flex-col items-center ${location.pathname === '/tickets' ? 'text-blue-600' : 'text-gray-500'}`}>
+          <Ticket className="h-6 w-6 mb-1" />
+          <span className="text-xs">Tickets</span>
         </Link>
         <Link to="/create-post" className="flex flex-col items-center">
           <div className="bg-blue-600 rounded-full p-3 -mt-5 mb-1 shadow-md">
@@ -23,9 +23,9 @@ const FooterNav = () => {
           </div>
           <span className="text-xs text-gray-500">Post</span>
         </Link>
-        <Link to="/tickets" className={`flex flex-col items-center ${location.pathname === '/tickets' ? 'text-blue-600' : 'text-gray-500'}`}>
-          <Ticket className="h-6 w-6 mb-1" />
-          <span className="text-xs">Tickets</span>
+        <Link to="/search" className={`flex flex-col items-center ${location.pathname === '/search' ? 'text-blue-600' : 'text-gray-500'}`}>
+          <Search className="h-6 w-6 mb-1" />
+          <span className="text-xs">Search</span>
         </Link>
         <Link to="/profile" className={`flex flex-col items-center ${location.pathname === '/profile' ? 'text-blue-600' : 'text-gray-500'}`}>
           <User className="h-6 w-6 mb-1" />
