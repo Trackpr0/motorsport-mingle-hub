@@ -54,7 +54,14 @@ const ManageMemberships = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setMemberships(data || []);
+      
+      // Process the data to convert subscriber_count from array to number
+      const processedData = data?.map(item => ({
+        ...item,
+        subscriber_count: item.subscriber_count?.[0]?.count || 0
+      }));
+      
+      setMemberships(processedData || []);
     } catch (error) {
       console.error("Error fetching memberships:", error);
       toast.error("Failed to load memberships");
