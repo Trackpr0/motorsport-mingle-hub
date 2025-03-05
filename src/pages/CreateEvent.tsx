@@ -120,39 +120,17 @@ const CreateEvent = () => {
   const handleSaveAndContinue = async () => {
     if (!validateForm()) return;
     
-    setLoading(true);
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        toast.error("You must be logged in to create an event");
-        return;
-      }
-      
-      const eventData = {
-        user_id: session.user.id,
-        type: 'business',
-        caption: title,
-        has_event: true,
-        image_url: 'https://placehold.co/600x400?text=Event+Image',
-        membership_id: membersOnly ? selectedMembership : null
-      };
-      
-      const { data, error } = await supabase
-        .from('posts')
-        .insert(eventData)
-        .select()
-        .single();
-        
-      if (error) throw error;
-      
-      toast.success("Event created successfully!");
-      navigate("/profile");
-    } catch (error) {
-      console.error("Error creating event:", error);
-      toast.error("Failed to create event");
-    } finally {
-      setLoading(false);
-    }
+    const eventData = {
+      caption: title,
+      membership_id: membersOnly ? selectedMembership : null,
+      levels: selectedLevels.map(levelId => ({
+        level_id: levelId,
+        price: levelData[levelId].price,
+        quantity: levelData[levelId].quantity
+      }))
+    };
+    
+    navigate("/event-details", { state: { eventData } });
   };
   
   const handleGoBack = () => {
