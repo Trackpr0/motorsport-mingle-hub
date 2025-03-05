@@ -86,17 +86,20 @@ const EventDetails = () => {
           </div>
         </div>
         
-        <EventForm 
-          eventName={eventName}
-          setEventName={setEventName}
-          eventLocation={eventLocation}
-          setEventLocation={setEventLocation}
-          isMultiDay={isMultiDay}
-          setIsMultiDay={setIsMultiDay}
-        />
-        
-        {/* Calendar is now separate from the EventForm */}
         <div className="bg-white rounded-lg p-6 shadow-sm">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-blue-600 font-medium">Select Day(s)</h2>
+            <div className="flex items-center">
+              <label className="text-sm mr-2">Multi-day event</label>
+              <input 
+                type="checkbox" 
+                checked={isMultiDay}
+                onChange={(e) => setIsMultiDay(e.target.checked)}
+                className="rounded text-blue-600 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+          
           <Calendar 
             currentMonth={currentMonth}
             setCurrentMonth={setCurrentMonth}
@@ -106,6 +109,15 @@ const EventDetails = () => {
             onDateSelection={handleDateSelection}
           />
         </div>
+        
+        <EventForm 
+          eventName={eventName}
+          setEventName={setEventName}
+          eventLocation={eventLocation}
+          setEventLocation={setEventLocation}
+          isMultiDay={isMultiDay}
+          setIsMultiDay={setIsMultiDay}
+        />
         
         <Button 
           className="w-full bg-blue-600 text-white hover:bg-blue-700"
