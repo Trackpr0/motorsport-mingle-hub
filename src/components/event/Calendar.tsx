@@ -143,6 +143,24 @@ const Calendar: React.FC<CalendarProps> = ({
     }
   };
 
+  const isStartDate = (day: CalendarDay) => {
+    if (!startDate) return false;
+    return (
+      startDate.getDate() === day.day &&
+      startDate.getMonth() === day.month &&
+      startDate.getFullYear() === day.year
+    );
+  };
+
+  const isEndDate = (day: CalendarDay) => {
+    if (!endDate) return false;
+    return (
+      endDate.getDate() === day.day &&
+      endDate.getMonth() === day.month &&
+      endDate.getFullYear() === day.year
+    );
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
@@ -204,19 +222,39 @@ const Calendar: React.FC<CalendarProps> = ({
         <div className="text-blue-600 font-medium">S</div>
         <div className="text-blue-600 font-medium">S</div>
         
-        {getCalendarDays().map((day, index) => (
-          <div 
-            key={index}
-            onClick={() => onDateSelection(day)}
-            className={`p-2 cursor-pointer ${
-              day.current ? "text-black" : "text-gray-400"
-            } ${
-              isDateInRange(day) ? "bg-blue-600 text-white rounded-full" : ""
-            }`}
-          >
-            {day.day}
-          </div>
-        ))}
+        {getCalendarDays().map((day, index) => {
+          const inRange = isDateInRange(day);
+          const isStart = isStartDate(day);
+          const isEnd = isEndDate(day);
+          
+          let className = `p-2 cursor-pointer ${day.current ? "text-black" : "text-gray-400"}`;
+          
+          if (inRange) {
+            className += " bg-blue-100";
+          }
+          
+          if (isStart) {
+            className += " bg-blue-600 text-white rounded-l-full";
+          }
+          
+          if (isEnd) {
+            className += " bg-blue-600 text-white rounded-r-full";
+          }
+          
+          if (isStart && isEnd) {
+            className += " rounded-full";
+          }
+          
+          return (
+            <div 
+              key={index}
+              onClick={() => onDateSelection(day)}
+              className={className}
+            >
+              {day.day}
+            </div>
+          );
+        })}
       </div>
       
       {isMultiDay && (
