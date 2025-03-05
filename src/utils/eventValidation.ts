@@ -44,21 +44,14 @@ export const validateEventForm = ({
   return true;
 };
 
-// Updated function to validate the event details form
+// Updated function to validate the event details form - removed eventName from validation
 export const validateEventDetailsForm = ({
-  eventName,
   selectedDate,
   eventLocation
 }: {
-  eventName: string;
   selectedDate: Date | null;
   eventLocation: string;
 }): boolean => {
-  if (!eventName.trim()) {
-    toast.error("Please enter an event name");
-    return false;
-  }
-  
   if (!selectedDate) {
     toast.error("Please select a date");
     return false;

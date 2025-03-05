@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import EventHeader from "@/components/event/EventHeader";
@@ -14,7 +13,6 @@ const EventDetails = () => {
   const location = useLocation();
   const eventData = location.state?.eventData || {};
   
-  const [eventName, setEventName] = useState("");
   const [eventLocation, setEventLocation] = useState("");
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -62,7 +60,7 @@ const EventDetails = () => {
   
   const handleSubmitEvent = () => {
     handleCreateEvent({
-      eventName,
+      eventName: eventData.caption || "",
       startDate,
       endDate,
       isMultiDay,
@@ -123,8 +121,6 @@ const EventDetails = () => {
         </div>
         
         <EventForm 
-          eventName={eventName}
-          setEventName={setEventName}
           eventLocation={eventLocation}
           setEventLocation={setEventLocation}
           isMultiDay={isMultiDay}

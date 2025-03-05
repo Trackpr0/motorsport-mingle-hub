@@ -29,7 +29,6 @@ export const useEventCreationSubmit = () => {
     eventData
   }: EventDetailsData) => {
     if (!validateEventDetailsForm({
-      eventName,
       selectedDate: startDate,
       eventLocation
     })) return;
