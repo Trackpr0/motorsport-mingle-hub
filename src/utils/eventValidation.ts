@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 import { LevelData } from "@/hooks/useEventCreation";
 
@@ -44,7 +43,6 @@ export const validateEventForm = ({
   return true;
 };
 
-// Updated function to validate the event details form - removed eventName from validation
 export const validateEventDetailsForm = ({
   selectedDate,
   eventLocation
@@ -54,11 +52,6 @@ export const validateEventDetailsForm = ({
 }): boolean => {
   if (!selectedDate) {
     toast.error("Please select a date");
-    return false;
-  }
-  
-  if (!eventLocation.trim()) {
-    toast.error("Please enter an event location");
     return false;
   }
   

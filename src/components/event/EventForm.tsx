@@ -17,7 +17,7 @@ const EventForm: React.FC<EventFormProps> = ({
 }) => {
   return (
     <div className="bg-white rounded-lg p-6 shadow-sm">
-      <h2 className="text-blue-600 font-medium mb-2">Event Location</h2>
+      <h2 className="text-blue-600 font-medium mb-2">Event Location (optional)</h2>
       <LocationInput
         value={eventLocation}
         onChange={setEventLocation}

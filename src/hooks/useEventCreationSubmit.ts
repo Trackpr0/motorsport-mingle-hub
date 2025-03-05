@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -76,7 +77,7 @@ export const useEventCreationSubmit = () => {
         event_date: startDate?.toISOString(),
         event_end_date: endDate ? endDate.toISOString() : null,
         is_multi_day: isMultiDay && endDate !== null,
-        location: eventLocation,
+        location: eventLocation || null, // Allow null for empty location
         user_id: session.user.id,
         image_url: imageUrl
       };
