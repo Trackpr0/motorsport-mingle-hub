@@ -1,5 +1,5 @@
 
-import { Heart, MessageCircle, Share2, User } from "lucide-react";
+import { Heart, MessageCircle, Share2, User, Lock } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
 interface BusinessPostProps {
@@ -11,6 +11,7 @@ interface BusinessPostProps {
   hasEvent: boolean;
   profileId?: string | null;
   avatarUrl?: string | null;
+  isMembersOnly?: boolean;
 }
 
 const BusinessPost = ({ 
@@ -21,7 +22,8 @@ const BusinessPost = ({
   description, 
   hasEvent, 
   profileId,
-  avatarUrl 
+  avatarUrl,
+  isMembersOnly = false
 }: BusinessPostProps) => {
   return (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
@@ -43,14 +45,22 @@ const BusinessPost = ({
             <span className="text-sm text-gray-500">{location}</span>
           </div>
         </div>
-        <button className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
-          <span className="font-semibold text-gray-900 text-sm">{rating}</span>
-          <img 
-            src="/lovable-uploads/a86b6920-93c3-43b5-8070-36cd7514b1d1.png" 
-            alt="Tire Rating" 
-            className="w-6 h-5"
-          />
-        </button>
+        <div className="flex items-center">
+          {isMembersOnly && (
+            <div className="flex items-center mr-2 px-2 py-1 bg-gray-100 rounded-lg text-xs font-medium text-gray-700">
+              <Lock className="w-3 h-3 mr-1" />
+              Members
+            </div>
+          )}
+          <button className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+            <span className="font-semibold text-gray-900 text-sm">{rating}</span>
+            <img 
+              src="/lovable-uploads/a86b6920-93c3-43b5-8070-36cd7514b1d1.png" 
+              alt="Tire Rating" 
+              className="w-6 h-5"
+            />
+          </button>
+        </div>
       </div>
       
       <img src={imageUrl} alt="" className="w-full aspect-[4/3] object-cover" />

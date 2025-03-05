@@ -13,6 +13,9 @@ import CreateBusinessProfile from "./pages/CreateBusinessProfile";
 import CreatePost from "./pages/CreatePost";
 import PostDetails from "./pages/PostDetails";
 import CreateEvent from "@/pages/CreateEvent";
+import ManageMemberships from "./pages/ManageMemberships";
+import MembershipMembers from "./pages/MembershipMembers";
+import BrowseMemberships from "./pages/BrowseMemberships";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +38,9 @@ export default function App() {
               <Route path="/create-post" element={<CreatePost />} />
               <Route path="/post-details" element={<PostDetails />} />
               <Route path="/create-event" element={<CreateEvent />} />
+              <Route path="/manage-memberships" element={<ManageMemberships />} />
+              <Route path="/membership/:membershipId/members" element={<MembershipMembers />} />
+              <Route path="/memberships" element={<BrowseMemberships />} />
               <Route path="*" element={<Login />} />
             </Routes>
           </Router>

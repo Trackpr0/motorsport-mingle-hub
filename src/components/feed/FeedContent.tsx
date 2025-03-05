@@ -2,6 +2,7 @@
 import React from "react";
 import BusinessPost from "../posts/BusinessPost";
 import PersonalPost from "../posts/PersonalPost";
+import { Lock } from "lucide-react";
 
 interface FeedContentProps {
   posts: any[];
@@ -28,6 +29,9 @@ const FeedContent: React.FC<FeedContentProps> = ({ posts, loading }) => {
         const isBusinessPost = post.type === "business" || 
                               post.enthusiast_profiles?.user_type === "business";
         
+        // Determine if this is a members-only post
+        const isMembersOnly = post.membership_id !== null;
+        
         return isBusinessPost ? (
           <BusinessPost
             key={post.id}
@@ -41,6 +45,7 @@ const FeedContent: React.FC<FeedContentProps> = ({ posts, loading }) => {
             hasEvent={post.has_event}
             profileId={post.user_id}
             avatarUrl={post.enthusiast_profiles?.avatar_url}
+            isMembersOnly={isMembersOnly}
           />
         ) : (
           <PersonalPost

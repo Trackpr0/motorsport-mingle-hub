@@ -1,7 +1,8 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import EventHeader from "@/components/event/EventHeader";
 import TitleInput from "@/components/event/TitleInput";
 import LevelSelector from "@/components/event/LevelSelector";
@@ -21,6 +22,32 @@ const CreateEvent = () => {
   const [membersOnly, setMembersOnly] = useState(false);
   const [selectedLevels, setSelectedLevels] = useState<number[]>([]);
   const [levelData, setLevelData] = useState<Record<number, { price: string; quantity: number }>>({});
+  const [memberships, setMemberships] = useState<{id: string, name: string}[]>([]);
+  const [selectedMembership, setSelectedMembership] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  
+  // Fetch available memberships for business users
+  useEffect(() => {
+    const fetchMemberships = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
+        
+        const { data, error } = await supabase
+          .from('memberships')
+          .select('id, name')
+          .eq('business_id', session.user.id);
+          
+        if (error) throw error;
+        if (data) setMemberships(data);
+      } catch (error) {
+        console.error('Error fetching memberships:', error);
+        toast.error('Failed to load memberships');
+      }
+    };
+    
+    fetchMemberships();
+  }, []);
   
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -60,6 +87,10 @@ const CreateEvent = () => {
     });
   };
   
+  const handleMembershipChange = (membershipId: string | null) => {
+    setSelectedMembership(membershipId);
+  };
+  
   const validateForm = () => {
     if (!title.trim()) {
       toast.error("Please enter a title");
@@ -80,13 +111,52 @@ const CreateEvent = () => {
       return false;
     }
     
+    if (membersOnly && !selectedMembership) {
+      toast.error("Please select a membership for members-only event");
+      return false;
+    }
+    
     return true;
   };
   
-  const handleSaveAndContinue = () => {
-    if (validateForm()) {
-      toast.success("Inventory item created successfully!");
+  const handleSaveAndContinue = async () => {
+    if (!validateForm()) return;
+    
+    setLoading(true);
+    try {
+      // In a real application, we would save the event to the database here
+      // This would include storing the event details, selected levels, prices, and membership requirements
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error("You must be logged in to create an event");
+        return;
+      }
+      
+      const eventData = {
+        user_id: session.user.id,
+        type: 'business',
+        caption: title,
+        has_event: true,
+        image_url: 'https://placehold.co/600x400?text=Event+Image', // Placeholder image
+        membership_id: membersOnly ? selectedMembership : null
+      };
+      
+      const { data, error } = await supabase
+        .from('posts')
+        .insert(eventData)
+        .select()
+        .single();
+        
+      if (error) throw error;
+      
+      toast.success("Event created successfully!");
       navigate("/profile");
+    } catch (error) {
+      console.error("Error creating event:", error);
+      toast.error("Failed to create event");
+    } finally {
+      setLoading(false);
     }
   };
   
@@ -106,6 +176,29 @@ const CreateEvent = () => {
           onMembersOnlyChange={setMembersOnly}
         />
         
+        {membersOnly && (
+          <div className="bg-white rounded-lg p-6 shadow-sm">
+            <label className="block text-blue-600 font-medium mb-2">Select Membership</label>
+            <select 
+              className="w-full p-2 border border-gray-300 rounded-md bg-white text-black"
+              value={selectedMembership || ''}
+              onChange={(e) => handleMembershipChange(e.target.value || null)}
+            >
+              <option value="">Select a membership...</option>
+              {memberships.map(membership => (
+                <option key={membership.id} value={membership.id}>
+                  {membership.name}
+                </option>
+              ))}
+            </select>
+            {memberships.length === 0 && (
+              <p className="mt-2 text-sm text-gray-500">
+                You need to create memberships first. Go to Profile &gt; Manage Memberships.
+              </p>
+            )}
+          </div>
+        )}
+        
         <LevelSelector 
           levels={levels}
           selectedLevels={selectedLevels}
@@ -118,6 +211,7 @@ const CreateEvent = () => {
         <ActionButtons 
           onAddInventory={handleSaveAndContinue}
           onSaveAndContinue={handleSaveAndContinue}
+          loading={loading}
         />
       </div>
     </div>

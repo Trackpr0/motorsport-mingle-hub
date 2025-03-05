@@ -1,5 +1,5 @@
 
-import { User, ChevronRight, Timer } from "lucide-react";
+import { User, ChevronRight, Timer, CreditCard } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -37,6 +37,10 @@ const BusinessProfile = ({
   const handleCreateEventClick = () => {
     navigate("/create-event");
   };
+  
+  const handleManageMembershipsClick = () => {
+    navigate("/manage-memberships");
+  };
 
   return (
     <>
@@ -67,6 +71,30 @@ const BusinessProfile = ({
             <p className="text-gray-600">No location set</p>
           </div>
         </div>
+
+        {isOwnProfile && (
+          <div className="space-y-4 mb-6">
+            <div className="flex justify-between items-center">
+              <span className="text-lg font-medium text-black">Memberships</span>
+              <Button 
+                variant="link" 
+                className="text-blue-600 p-0 flex items-center" 
+                onClick={handleManageMembershipsClick}
+              >
+                Manage <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
+            <div className="bg-gray-100 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-black">Member Subscriptions</p>
+                  <p className="text-sm text-gray-600">Create memberships for exclusive events</p>
+                </div>
+                <CreditCard className="h-6 w-6 text-blue-600" />
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="space-y-4 mb-6">
           <div className="flex justify-between items-center">

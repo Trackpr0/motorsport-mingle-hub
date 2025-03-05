@@ -48,6 +48,44 @@ export type Database = {
         }
         Relationships: []
       }
+      memberships: {
+        Row: {
+          business_id: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          price: number
+          updated_at: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          price: number
+          updated_at?: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          price?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memberships_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "enthusiast_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           caption: string | null
@@ -57,6 +95,7 @@ export type Database = {
           id: string
           image_url: string
           location: string | null
+          membership_id: string | null
           type: string
           updated_at: string
           user_id: string
@@ -69,6 +108,7 @@ export type Database = {
           id?: string
           image_url: string
           location?: string | null
+          membership_id?: string | null
           type?: string
           updated_at?: string
           user_id: string
@@ -81,13 +121,63 @@ export type Database = {
           id?: string
           image_url?: string
           location?: string | null
+          membership_id?: string | null
           type?: string
           updated_at?: string
           user_id?: string
         }
         Relationships: [
           {
+            foreignKeyName: "posts_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "memberships"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "enthusiast_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_memberships: {
+        Row: {
+          expiry_date: string | null
+          id: string
+          is_active: boolean
+          membership_id: string
+          purchase_date: string
+          user_id: string
+        }
+        Insert: {
+          expiry_date?: string | null
+          id?: string
+          is_active?: boolean
+          membership_id: string
+          purchase_date?: string
+          user_id: string
+        }
+        Update: {
+          expiry_date?: string | null
+          id?: string
+          is_active?: boolean
+          membership_id?: string
+          purchase_date?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_memberships_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_memberships_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "enthusiast_profiles"

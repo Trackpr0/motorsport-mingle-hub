@@ -1,47 +1,33 @@
-
-import { Home, Ticket, PlusSquare, Search, User } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Home, Search, User, Star } from "lucide-react";
 
 const FooterNav = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-
-  const handleCreatePost = () => {
-    navigate("/create-post");
-  };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2">
-      <div className="max-w-md mx-auto px-4 flex justify-between items-center">
-        <Link to="/home" className="flex flex-col items-center text-motorsport-blue">
-          <Home className="w-6 h-6" />
-          <span className="text-xs mt-1">Home</span>
+    <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 py-2">
+      <nav className="flex justify-around items-center max-w-md mx-auto">
+        <Link to="/" className={`flex flex-col items-center ${location.pathname === '/' ? 'text-blue-600' : 'text-gray-500'}`}>
+          <Home className="h-6 w-6 mb-1" />
+          Home
         </Link>
-        <button className="flex flex-col items-center text-motorsport-blue">
-          <Ticket className="w-6 h-6" />
-          <span className="text-xs mt-1">Events</span>
-        </button>
-        <button 
-          className="flex flex-col items-center -mt-8"
-          onClick={handleCreatePost}
-        >
-          <div className="w-14 h-14 rounded-full bg-blue-600 flex items-center justify-center shadow-lg">
-            <PlusSquare className="w-7 h-7 text-white" />
-          </div>
-        </button>
-        <button className="flex flex-col items-center text-motorsport-blue">
-          <Search className="w-6 h-6" />
-          <span className="text-xs mt-1">Search</span>
-        </button>
-        <Link 
-          to="/profile" 
-          className={`flex flex-col items-center ${location.pathname === '/profile' ? 'text-motorsport-blue' : 'text-motorsport-blue'}`}
-        >
-          <User className="w-6 h-6" />
-          <span className="text-xs mt-1">Profile</span>
+        <Link to="/search" className={`flex flex-col items-center ${location.pathname === '/search' ? 'text-blue-600' : 'text-gray-500'}`}>
+          <Search className="h-6 w-6 mb-1" />
+          Search
         </Link>
-      </div>
-    </nav>
+        {localStorage.getItem('userType') !== 'business' && (
+          <Link to="/memberships" className={`flex flex-col items-center ${location.pathname === '/memberships' ? 'text-blue-600' : 'text-gray-500'}`}>
+            <Star className="h-6 w-6 mb-1" />
+            Memberships
+          </Link>
+        )}
+        <Link to="/profile" className={`flex flex-col items-center ${location.pathname === '/profile' ? 'text-blue-600' : 'text-gray-500'}`}>
+          <User className="h-6 w-6 mb-1" />
+          Profile
+        </Link>
+      </nav>
+    </footer>
   );
 };
 
