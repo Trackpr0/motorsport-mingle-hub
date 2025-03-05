@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import EventHeader from "@/components/event/EventHeader";
 import { Button } from "@/components/ui/button";
+import LocationInput from "@/components/LocationInput";
 
 const EventDetails = () => {
   const navigate = useNavigate();
@@ -13,8 +14,8 @@ const EventDetails = () => {
   const eventData = location.state?.eventData || {};
   
   const [eventName, setEventName] = useState("");
+  const [eventLocation, setEventLocation] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedInventory, setSelectedInventory] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   
@@ -116,8 +117,8 @@ const EventDetails = () => {
       return;
     }
     
-    if (!selectedInventory) {
-      toast.error("Please select an inventory item");
+    if (!eventLocation) {
+      toast.error("Please enter an event location");
       return;
     }
     
@@ -134,7 +135,7 @@ const EventDetails = () => {
         ...eventData,
         event_name: eventName,
         event_date: selectedDate.toISOString(),
-        inventory_item: selectedInventory,
+        location: eventLocation,
         user_id: session.user.id,
       };
       
@@ -240,11 +241,13 @@ const EventDetails = () => {
         </div>
         
         <div className="bg-white rounded-lg p-6 shadow-sm">
-          <h2 className="text-blue-600 font-medium mb-2">Select Inventory Item</h2>
-          <div className="flex justify-between items-center">
-            <span className="text-gray-400">Title Name</span>
-            <span className="text-gray-400">▼</span>
-          </div>
+          <h2 className="text-blue-600 font-medium mb-2">Event Location</h2>
+          <LocationInput
+            value={eventLocation}
+            onChange={setEventLocation}
+            placeholder="Enter track location..."
+            mapboxToken="pk.eyJ1IjoidHJhY2todWJsbGMiLCJhIjoiY203dHozcWd4MGN0ejJqcHFwNDBzd3l5OCJ9.QFkcZKkOyJzECS5PwYzT7Q"
+          />
         </div>
         
         <Button 
