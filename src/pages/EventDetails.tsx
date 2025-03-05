@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Calendar } from "lucide-react";
@@ -38,7 +37,6 @@ const EventDetails = () => {
     const currentMonthDays = [];
     const nextMonthDays = [];
     
-    // Previous month days
     const prevMonth = month === 0 ? 11 : month - 1;
     const prevMonthYear = month === 0 ? year - 1 : year;
     const prevMonthTotalDays = daysInMonth(prevMonthYear, prevMonth);
@@ -52,7 +50,6 @@ const EventDetails = () => {
       });
     }
     
-    // Current month days
     for (let i = 1; i <= days; i++) {
       currentMonthDays.push({
         day: i,
@@ -62,8 +59,7 @@ const EventDetails = () => {
       });
     }
     
-    // Next month days
-    const totalCalendarDays = 42; // 6 rows * 7 days
+    const totalCalendarDays = 42;
     const remainingDays = totalCalendarDays - (prevMonthDays.length + currentMonthDays.length);
     const nextMonth = month === 11 ? 0 : month + 1;
     const nextMonthYear = month === 11 ? year + 1 : year;
@@ -130,7 +126,6 @@ const EventDetails = () => {
         return;
       }
       
-      // Combine data from both steps
       const completeEventData = {
         ...eventData,
         event_name: eventName,
@@ -172,7 +167,7 @@ const EventDetails = () => {
       
       <div className="flex-1 p-4 space-y-4">
         <div className="bg-white rounded-lg p-6 shadow-sm">
-          <h2 className="text-blue-600 font-medium mb-2">Trackday Event Image</h2>
+          <h2 className="text-blue-600 font-medium mb-2">Event Image</h2>
           <div className="flex items-center justify-center bg-blue-100 rounded-lg h-32 text-center">
             <div className="text-center">
               <div className="bg-blue-200 rounded-lg p-4 inline-block">
@@ -230,7 +225,7 @@ const EventDetails = () => {
         </div>
         
         <div className="bg-white rounded-lg p-6 shadow-sm">
-          <h2 className="text-blue-600 font-medium mb-2">Trackday Event Name</h2>
+          <h2 className="text-blue-600 font-medium mb-2">Event Name</h2>
           <input
             type="text"
             value={eventName}
