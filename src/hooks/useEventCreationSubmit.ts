@@ -71,7 +71,7 @@ export const useEventCreationSubmit = () => {
         }
       }
       
-      // Extract necessary data from eventData and remove invalid fields
+      // Save levels data for later use but remove from the main event data
       const { levels, ...cleanEventData } = eventData;
       
       // Create event date from selected date
@@ -99,8 +99,24 @@ export const useEventCreationSubmit = () => {
         
       if (error) throw error;
       
-      // If we have levels data, we could create relations in another table
-      // This would require a separate table for event levels
+      // Insert levels data into the event_levels table
+      if (levels && levels.length > 0 && data) {
+        const levelsToInsert = levels.map(level => ({
+          post_id: data.id,
+          level_id: level.level_id,
+          price: level.price,
+          quantity: level.quantity
+        }));
+        
+        const { error: levelsError } = await supabase
+          .from('event_levels')
+          .insert(levelsToInsert);
+          
+        if (levelsError) {
+          console.error("Error saving event levels:", levelsError);
+          toast.warning("Event created but there was an issue saving level information");
+        }
+      }
       
       toast.success("Event created successfully!");
       navigate("/profile");

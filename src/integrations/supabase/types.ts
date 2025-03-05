@@ -48,6 +48,41 @@ export type Database = {
         }
         Relationships: []
       }
+      event_levels: {
+        Row: {
+          created_at: string
+          id: string
+          level_id: number
+          post_id: string | null
+          price: string
+          quantity: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          level_id: number
+          post_id?: string | null
+          price: string
+          quantity: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          level_id?: number
+          post_id?: string | null
+          price?: string
+          quantity?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_levels_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       memberships: {
         Row: {
           business_id: string
@@ -90,6 +125,8 @@ export type Database = {
         Row: {
           caption: string | null
           created_at: string
+          event_date: string | null
+          event_end_date: string | null
           event_id: string | null
           has_event: boolean | null
           id: string
@@ -103,6 +140,8 @@ export type Database = {
         Insert: {
           caption?: string | null
           created_at?: string
+          event_date?: string | null
+          event_end_date?: string | null
           event_id?: string | null
           has_event?: boolean | null
           id?: string
@@ -116,6 +155,8 @@ export type Database = {
         Update: {
           caption?: string | null
           created_at?: string
+          event_date?: string | null
+          event_end_date?: string | null
           event_id?: string | null
           has_event?: boolean | null
           id?: string
