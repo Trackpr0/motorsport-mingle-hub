@@ -71,20 +71,21 @@ export const useEventCreationSubmit = () => {
         }
       }
       
+      // Update post data structure to match the actual database schema
       const completeEventData = {
-        ...eventData,
-        event_name: eventName,
-        event_date: startDate?.toISOString(),
-        event_end_date: endDate ? endDate.toISOString() : null,
-        is_multi_day: isMultiDay && endDate !== null,
-        location: eventLocation || null, // Allow null for empty location
+        caption: eventName,
+        has_event: true,
+        type: eventData.type || 'event',
+        location: eventLocation || null,
         user_id: session.user.id,
-        image_url: imageUrl
+        image_url: imageUrl || 'https://placehold.co/600x400?text=No+Image',
+        // Include any other fields from eventData
+        ...eventData
       };
       
       const { data, error } = await supabase
         .from('posts')
-        .upsert(completeEventData)
+        .insert(completeEventData)
         .select()
         .single();
         

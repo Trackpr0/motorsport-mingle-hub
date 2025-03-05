@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import EventHeader from "@/components/event/EventHeader";
@@ -7,6 +8,7 @@ import Calendar from "@/components/event/Calendar";
 import EventForm from "@/components/event/EventForm";
 import { useEventImageUpload } from "@/hooks/useEventImageUpload";
 import { useEventCreationSubmit } from "@/hooks/useEventCreationSubmit";
+import { Loader2 } from "lucide-react";
 
 const EventDetails = () => {
   const navigate = useNavigate();
@@ -130,9 +132,14 @@ const EventDetails = () => {
         <Button 
           className="w-full bg-blue-600 text-white hover:bg-blue-700"
           onClick={handleSubmitEvent}
-          disabled={loading}
+          disabled={loading || !startDate}
         >
-          {loading ? "Creating..." : "Create Event"}
+          {loading ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              Creating...
+            </>
+          ) : "Create Event"}
         </Button>
       </div>
     </div>
