@@ -166,7 +166,7 @@ const Calendar: React.FC<CalendarProps> = ({
       <div className="flex justify-between items-center mb-4">
         <button 
           onClick={handlePrevMonth} 
-          className="text-blue-600"
+          className="text-blue-600 p-2"
         >
           &lt;
         </button>
@@ -207,19 +207,19 @@ const Calendar: React.FC<CalendarProps> = ({
         
         <button 
           onClick={handleNextMonth}
-          className="text-blue-600"
+          className="text-blue-600 p-2"
         >
           &gt;
         </button>
       </div>
       
       <div className="grid grid-cols-7 gap-2 text-center">
+        <div className="text-blue-600 font-medium">S</div>
         <div className="text-blue-600 font-medium">M</div>
         <div className="text-blue-600 font-medium">T</div>
         <div className="text-blue-600 font-medium">W</div>
         <div className="text-blue-600 font-medium">T</div>
         <div className="text-blue-600 font-medium">F</div>
-        <div className="text-blue-600 font-medium">S</div>
         <div className="text-blue-600 font-medium">S</div>
         
         {getCalendarDays().map((day, index) => {
@@ -227,22 +227,28 @@ const Calendar: React.FC<CalendarProps> = ({
           const isStart = isStartDate(day);
           const isEnd = isEndDate(day);
           
-          let className = `p-2 cursor-pointer ${day.current ? "text-black" : "text-gray-400"}`;
+          let className = "h-10 w-10 flex items-center justify-center cursor-pointer ";
           
-          if (inRange) {
+          // Apply text color based on whether it's current month or not
+          className += day.current ? "text-black" : "text-gray-400";
+          
+          // Apply styling for dates in range
+          if (inRange && isMultiDay) {
             className += " bg-blue-100";
           }
           
+          // Apply special styling for start and end dates
           if (isStart) {
-            className += " bg-blue-600 text-white rounded-l-full";
+            className = day.current ? "h-10 w-10 flex items-center justify-center cursor-pointer text-white bg-blue-800" : "h-10 w-10 flex items-center justify-center cursor-pointer text-white bg-blue-800 opacity-50";
           }
           
-          if (isEnd) {
-            className += " bg-blue-600 text-white rounded-r-full";
+          if (isEnd && startDate !== endDate) {
+            className = day.current ? "h-10 w-10 flex items-center justify-center cursor-pointer text-white bg-blue-800" : "h-10 w-10 flex items-center justify-center cursor-pointer text-white bg-blue-800 opacity-50";
           }
           
-          if (isStart && isEnd) {
-            className += " rounded-full";
+          // If it's a single day selection (or start and end are the same)
+          if (isStart && (!isMultiDay || (isEnd && startDate === endDate))) {
+            className = day.current ? "h-10 w-10 flex items-center justify-center cursor-pointer text-white bg-blue-800" : "h-10 w-10 flex items-center justify-center cursor-pointer text-white bg-blue-800 opacity-50";
           }
           
           return (
