@@ -127,20 +127,10 @@ const Calendar: React.FC<CalendarProps> = ({
   
   const isDateInRange = (day: CalendarDay) => {
     if (!startDate) return false;
+    if (!isMultiDay || !endDate) return false;
     
     const date = new Date(day.year, day.month, day.day);
-    
-    if (!isMultiDay || !endDate) {
-      // Single day selection
-      return (
-        startDate.getDate() === day.day &&
-        startDate.getMonth() === day.month &&
-        startDate.getFullYear() === day.year
-      );
-    } else {
-      // Multi-day selection - check if date is within range (inclusive)
-      return date >= startDate && date <= endDate;
-    }
+    return date > startDate && date < endDate;
   };
 
   const isStartDate = (day: CalendarDay) => {
@@ -159,6 +149,18 @@ const Calendar: React.FC<CalendarProps> = ({
       endDate.getMonth() === day.month &&
       endDate.getFullYear() === day.year
     );
+  };
+
+  const isSelectedDate = (day: CalendarDay) => {
+    if (!startDate) return false;
+    
+    // For single day selection
+    if (!isMultiDay || !endDate) {
+      return isStartDate(day);
+    }
+    
+    // For multi-day selection, check if it's either the start or end date
+    return isStartDate(day) || isEndDate(day);
   };
 
   return (
@@ -227,28 +229,38 @@ const Calendar: React.FC<CalendarProps> = ({
           const isStart = isStartDate(day);
           const isEnd = isEndDate(day);
           
-          let className = "h-10 w-10 flex items-center justify-center cursor-pointer ";
+          let className = "h-10 w-10 flex items-center justify-center cursor-pointer rounded-md ";
           
           // Apply text color based on whether it's current month or not
           className += day.current ? "text-black" : "text-gray-400";
           
           // Apply styling for dates in range
           if (inRange && isMultiDay) {
+            className = className.replace("rounded-md", "");
             className += " bg-blue-100";
           }
           
-          // Apply special styling for start and end dates
+          // Apply special styling for start date
           if (isStart) {
-            className = day.current ? "h-10 w-10 flex items-center justify-center cursor-pointer text-white bg-blue-800" : "h-10 w-10 flex items-center justify-center cursor-pointer text-white bg-blue-800 opacity-50";
+            className = `h-10 w-10 flex items-center justify-center cursor-pointer text-white ${day.current ? "bg-blue-800" : "bg-blue-800 opacity-50"}`;
+            
+            // If there's an end date and it's not the same as start date, style the left side
+            if (endDate && startDate?.getTime() !== endDate?.getTime()) {
+              className += " rounded-l-md";
+            } else {
+              className += " rounded-md";
+            }
           }
           
-          if (isEnd && startDate !== endDate) {
-            className = day.current ? "h-10 w-10 flex items-center justify-center cursor-pointer text-white bg-blue-800" : "h-10 w-10 flex items-center justify-center cursor-pointer text-white bg-blue-800 opacity-50";
+          // Apply special styling for end date
+          if (isEnd && startDate?.getTime() !== endDate?.getTime()) {
+            className = `h-10 w-10 flex items-center justify-center cursor-pointer text-white ${day.current ? "bg-blue-800" : "bg-blue-800 opacity-50"}`;
+            className += " rounded-r-md";
           }
           
           // If it's a single day selection (or start and end are the same)
-          if (isStart && (!isMultiDay || (isEnd && startDate === endDate))) {
-            className = day.current ? "h-10 w-10 flex items-center justify-center cursor-pointer text-white bg-blue-800" : "h-10 w-10 flex items-center justify-center cursor-pointer text-white bg-blue-800 opacity-50";
+          if (isStart && (!isMultiDay || (isEnd && startDate?.getTime() === endDate?.getTime()))) {
+            className = `h-10 w-10 flex items-center justify-center cursor-pointer text-white rounded-md ${day.current ? "bg-blue-800" : "bg-blue-800 opacity-50"}`;
           }
           
           return (
