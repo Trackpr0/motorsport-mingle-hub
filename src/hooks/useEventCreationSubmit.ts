@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -61,16 +60,14 @@ export const useEventCreationSubmit = () => {
           
         if (uploadError) {
           console.error("Error uploading image:", uploadError);
-          toast.error("Failed to upload image");
-          setLoading(false);
-          return;
+          toast.warning("Failed to upload image, but continuing with event creation");
+        } else {
+          const { data: { publicUrl } } = supabase.storage
+            .from('event_images')
+            .getPublicUrl(filename);
+            
+          imageUrl = publicUrl;
         }
-        
-        const { data: { publicUrl } } = supabase.storage
-          .from('event_images')
-          .getPublicUrl(filename);
-          
-        imageUrl = publicUrl;
       }
       
       const completeEventData = {

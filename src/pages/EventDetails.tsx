@@ -87,7 +87,7 @@ const EventDetails = () => {
       
       <div className="flex-1 p-4 space-y-4">
         <div className="bg-white rounded-lg p-6 shadow-sm">
-          <h2 className="text-blue-600 font-medium mb-2">Event Image</h2>
+          <h2 className="text-blue-600 font-medium mb-2">Event Image (optional)</h2>
           <div className="flex items-center justify-center bg-blue-100 rounded-lg h-32 text-center overflow-hidden">
             <EventImageUpload 
               imageUrl={eventImage}

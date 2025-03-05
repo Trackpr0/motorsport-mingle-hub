@@ -26,7 +26,7 @@ export const EventImageUpload = ({
           <div className="bg-blue-200 rounded-lg p-4 inline-block">
             <Image className="h-8 w-8 text-blue-600" />
           </div>
-          <p className="mt-2 text-gray-500">Add Image</p>
+          <p className="mt-2 text-gray-500">Add Image (optional)</p>
         </div>
       )}
       <input
