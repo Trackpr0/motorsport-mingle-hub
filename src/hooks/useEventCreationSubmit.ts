@@ -71,16 +71,24 @@ export const useEventCreationSubmit = () => {
         }
       }
       
+      // Extract necessary data from eventData and remove invalid fields
+      const { levels, ...cleanEventData } = eventData;
+      
+      // Create event date from selected date
+      const eventDate = startDate ? startDate.toISOString() : null;
+      const eventEndDate = endDate ? endDate.toISOString() : null;
+      
       // Update post data structure to match the actual database schema
       const completeEventData = {
         caption: eventName,
         has_event: true,
-        type: eventData.type || 'event',
+        type: cleanEventData.type || 'event',
         location: eventLocation || null,
         user_id: session.user.id,
         image_url: imageUrl || 'https://placehold.co/600x400?text=No+Image',
-        // Include any other fields from eventData
-        ...eventData
+        event_date: eventDate,
+        event_end_date: eventEndDate,
+        ...cleanEventData
       };
       
       const { data, error } = await supabase
@@ -91,11 +99,14 @@ export const useEventCreationSubmit = () => {
         
       if (error) throw error;
       
+      // If we have levels data, we could create relations in another table
+      // This would require a separate table for event levels
+      
       toast.success("Event created successfully!");
       navigate("/profile");
     } catch (error) {
       console.error("Error creating event:", error);
-      toast.error("Failed to create event");
+      toast.error(`Failed to create event: ${error.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
