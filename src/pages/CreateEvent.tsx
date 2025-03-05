@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -26,7 +25,6 @@ const CreateEvent = () => {
   const [selectedMembership, setSelectedMembership] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   
-  // Fetch available memberships for business users
   useEffect(() => {
     const fetchMemberships = async () => {
       try {
@@ -124,9 +122,6 @@ const CreateEvent = () => {
     
     setLoading(true);
     try {
-      // In a real application, we would save the event to the database here
-      // This would include storing the event details, selected levels, prices, and membership requirements
-      
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         toast.error("You must be logged in to create an event");
@@ -138,7 +133,7 @@ const CreateEvent = () => {
         type: 'business',
         caption: title,
         has_event: true,
-        image_url: 'https://placehold.co/600x400?text=Event+Image', // Placeholder image
+        image_url: 'https://placehold.co/600x400?text=Event+Image',
         membership_id: membersOnly ? selectedMembership : null
       };
       
@@ -209,7 +204,6 @@ const CreateEvent = () => {
         />
         
         <ActionButtons 
-          onAddInventory={handleSaveAndContinue}
           onSaveAndContinue={handleSaveAndContinue}
           loading={loading}
         />
