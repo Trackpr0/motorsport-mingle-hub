@@ -126,7 +126,6 @@ const Calendar: React.FC<CalendarProps> = ({
   };
   
   const isDateInRange = (day: CalendarDay) => {
-    if (!day.current) return false;
     if (!startDate) return false;
     
     const date = new Date(day.year, day.month, day.day);
@@ -233,6 +232,13 @@ const Calendar: React.FC<CalendarProps> = ({
           ) : (
             <p className="text-blue-600">Please select start date</p>
           )}
+        </div>
+      )}
+      {!isMultiDay && startDate && (
+        <div className="mt-4 text-sm">
+          <p className="text-blue-600">
+            Selected: {startDate.toLocaleDateString()}
+          </p>
         </div>
       )}
     </div>

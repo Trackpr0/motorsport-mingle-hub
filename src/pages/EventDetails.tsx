@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import EventHeader from "@/components/event/EventHeader";
@@ -34,7 +33,7 @@ const EventDetails = () => {
     const selectedDate = new Date(day.year, day.month, day.day);
     
     if (!isMultiDay) {
-      // Single day selection
+      // Single day selection - always sets startDate and clears endDate
       setStartDate(selectedDate);
       setEndDate(null);
     } else {
@@ -42,6 +41,7 @@ const EventDetails = () => {
       if (!startDate) {
         // First selection sets start date
         setStartDate(selectedDate);
+        setEndDate(null);
       } else if (!endDate) {
         // Second selection sets end date
         if (selectedDate < startDate) {
@@ -52,7 +52,7 @@ const EventDetails = () => {
           setEndDate(selectedDate);
         }
       } else {
-        // Reset selection if both dates are already set
+        // Reset and start new selection
         setStartDate(selectedDate);
         setEndDate(null);
       }
@@ -69,6 +69,17 @@ const EventDetails = () => {
       eventImage,
       eventData
     });
+  };
+
+  // Toggle multi-day mode and reset dates when needed
+  const handleMultiDayToggle = (isChecked: boolean) => {
+    setIsMultiDay(isChecked);
+    if (!isChecked) {
+      // When switching to single day mode, keep only start date
+      if (startDate && endDate) {
+        setEndDate(null);
+      }
+    }
   };
 
   return (
@@ -94,7 +105,7 @@ const EventDetails = () => {
               <input 
                 type="checkbox" 
                 checked={isMultiDay}
-                onChange={(e) => setIsMultiDay(e.target.checked)}
+                onChange={(e) => handleMultiDayToggle(e.target.checked)}
                 className="rounded text-blue-600 focus:ring-blue-500"
               />
             </div>
@@ -116,7 +127,7 @@ const EventDetails = () => {
           eventLocation={eventLocation}
           setEventLocation={setEventLocation}
           isMultiDay={isMultiDay}
-          setIsMultiDay={setIsMultiDay}
+          setIsMultiDay={handleMultiDayToggle}
         />
         
         <Button 
