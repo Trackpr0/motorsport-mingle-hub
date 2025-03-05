@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Calendar } from "lucide-react";
+import { Calendar, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import EventHeader from "@/components/event/EventHeader";
 import { Button } from "@/components/ui/button";
 import LocationInput from "@/components/LocationInput";
 import { EventImageUpload } from "@/components/event/EventImageUpload";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const EventDetails = () => {
   const navigate = useNavigate();
@@ -24,6 +31,9 @@ const EventDetails = () => {
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
+  
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i);
   
   const daysInMonth = (year: number, month: number) => {
     return new Date(year, month + 1, 0).getDate();
@@ -100,6 +110,22 @@ const EventDetails = () => {
     setCurrentMonth(prev => {
       const newMonth = new Date(prev);
       newMonth.setMonth(prev.getMonth() + 1);
+      return newMonth;
+    });
+  };
+  
+  const handleMonthChange = (value: string) => {
+    setCurrentMonth(prev => {
+      const newMonth = new Date(prev);
+      newMonth.setMonth(parseInt(value));
+      return newMonth;
+    });
+  };
+  
+  const handleYearChange = (value: string) => {
+    setCurrentMonth(prev => {
+      const newMonth = new Date(prev);
+      newMonth.setFullYear(parseInt(value));
       return newMonth;
     });
   };
@@ -226,16 +252,48 @@ const EventDetails = () => {
         <div className="bg-white rounded-lg p-6 shadow-sm">
           <h2 className="text-blue-600 font-medium mb-4">Select Day(s)</h2>
           
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-4 gap-2">
             <button 
               onClick={handlePrevMonth} 
               className="text-blue-600"
             >
               &lt;
             </button>
-            <h3 className="text-blue-600 font-medium">
-              {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
-            </h3>
+            
+            <div className="flex items-center gap-2 flex-grow">
+              <Select
+                value={currentMonth.getMonth().toString()}
+                onValueChange={handleMonthChange}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Month" />
+                </SelectTrigger>
+                <SelectContent>
+                  {monthNames.map((month, index) => (
+                    <SelectItem key={index} value={index.toString()}>
+                      {month}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              
+              <Select
+                value={currentMonth.getFullYear().toString()}
+                onValueChange={handleYearChange}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Year" />
+                </SelectTrigger>
+                <SelectContent>
+                  {years.map(year => (
+                    <SelectItem key={year} value={year.toString()}>
+                      {year}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
             <button 
               onClick={handleNextMonth}
               className="text-blue-600"
