@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import PostsGrid from "./PostsGrid";
+import EventsGrid from "./EventsGrid";
 import { useNavigate } from "react-router-dom";
 
 interface BusinessProfileProps {
@@ -12,6 +13,7 @@ interface BusinessProfileProps {
   businessName: string;
   avatarUrl: string | null;
   posts: any[];
+  events: any[];
   loadingPosts: boolean;
   isOwnProfile?: boolean;
   userId?: string | null;
@@ -22,6 +24,7 @@ const BusinessProfile = ({
   businessName, 
   avatarUrl, 
   posts,
+  events,
   loadingPosts,
   isOwnProfile = false,
   userId
@@ -146,19 +149,24 @@ const BusinessProfile = ({
         <TabsContent value="posts" className="max-w-md mx-auto">
           <PostsGrid posts={posts} loading={loadingPosts} />
         </TabsContent>
-        <TabsContent value="events" className="max-w-md mx-auto p-4">
-          <div className="flex flex-col items-center justify-center h-48 gap-4">
-            <Timer className="w-12 h-12 text-gray-400" />
-            {isOwnProfile && (
-              <Button 
-                size="lg" 
-                className="rounded-full bg-blue-600 hover:bg-blue-700"
-                onClick={handleCreateEventClick}
-              >
-                +
-              </Button>
-            )}
-          </div>
+        <TabsContent value="events" className="max-w-md mx-auto">
+          {events.length > 0 ? (
+            <EventsGrid events={events} loading={loadingPosts} />
+          ) : (
+            <div className="flex flex-col items-center justify-center h-48 gap-4">
+              <Timer className="w-12 h-12 text-gray-400" />
+              {isOwnProfile && (
+                <Button 
+                  size="lg" 
+                  className="rounded-full bg-blue-600 hover:bg-blue-700"
+                  onClick={handleCreateEventClick}
+                >
+                  +
+                </Button>
+              )}
+              <p className="text-gray-500">No events yet</p>
+            </div>
+          )}
         </TabsContent>
       </Tabs>
     </>

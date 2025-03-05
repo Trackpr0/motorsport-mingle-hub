@@ -11,6 +11,7 @@ export const useProfileData = () => {
   const [businessName, setBusinessName] = useState<string>("");
   const [userId, setUserId] = useState<string | null>(null);
   const [posts, setPosts] = useState<any[]>([]);
+  const [events, setEvents] = useState<any[]>([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
 
   useEffect(() => {
@@ -74,7 +75,12 @@ export const useProfileData = () => {
           console.error('Error fetching user posts:', error);
           toast.error('Could not load posts');
         } else if (data) {
-          setPosts(data);
+          // Separate posts and events
+          const eventPosts = data.filter(post => post.has_event === true);
+          const regularPosts = data.filter(post => post.has_event !== true);
+          
+          setPosts(regularPosts);
+          setEvents(eventPosts);
         }
       } catch (error) {
         console.error('Unexpected error fetching posts:', error);
@@ -96,7 +102,11 @@ export const useProfileData = () => {
             filter: `user_id=eq.${userId}`
           }, 
           (payload) => {
-            setPosts(current => [payload.new, ...current]);
+            if (payload.new.has_event) {
+              setEvents(current => [payload.new, ...current]);
+            } else {
+              setPosts(current => [payload.new, ...current]);
+            }
           }
         )
         .subscribe();
@@ -115,6 +125,7 @@ export const useProfileData = () => {
     businessName,
     userId,
     posts,
+    events,
     loadingPosts
   };
 };

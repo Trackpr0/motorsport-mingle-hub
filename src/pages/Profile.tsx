@@ -1,48 +1,51 @@
 
-import { useNavigate } from "react-router-dom";
-import FooterNav from "@/components/navigation/FooterNav";
-import { useProfileData } from "@/hooks/useProfileData";
+import React from "react";
+import { useParams } from "react-router-dom";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import BusinessProfile from "@/components/profile/BusinessProfile";
 import EnthusiastProfile from "@/components/profile/EnthusiastProfile";
+import { useProfileData } from "@/hooks/useProfileData";
+import FooterNav from "@/components/navigation/FooterNav";
 
 const Profile = () => {
-  const navigate = useNavigate();
-  const {
-    username,
-    avatarUrl,
-    isLoading,
-    userType,
-    businessName,
+  const { 
+    username, 
+    avatarUrl, 
+    isLoading, 
+    userType, 
+    businessName, 
+    userId,
     posts,
-    loadingPosts,
-    userId
+    events,
+    loadingPosts
   } = useProfileData();
 
   return (
-    <div className="min-h-screen pb-20 bg-[#F8F9FE]">
+    <div className="min-h-screen bg-[#F8F9FE] pb-20">
       <ProfileHeader />
-
-      {userType === 'business' ? (
-        <BusinessProfile
+      
+      {userType === "business" ? (
+        <BusinessProfile 
           isLoading={isLoading}
           businessName={businessName}
           avatarUrl={avatarUrl}
           posts={posts}
+          events={events || []}
           loadingPosts={loadingPosts}
-          isOwnProfile={true} // Since this is the user's own profile page
+          isOwnProfile={true}
           userId={userId}
         />
       ) : (
-        <EnthusiastProfile
+        <EnthusiastProfile 
           isLoading={isLoading}
           username={username}
           avatarUrl={avatarUrl}
           posts={posts}
           loadingPosts={loadingPosts}
+          isOwnProfile={true}
         />
       )}
-
+      
       <FooterNav />
     </div>
   );
