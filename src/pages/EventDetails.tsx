@@ -95,6 +95,7 @@ const EventDetails = () => {
           setIsMultiDay={setIsMultiDay}
         />
         
+        {/* Calendar is now separate from the EventForm */}
         <div className="bg-white rounded-lg p-6 shadow-sm">
           <Calendar 
             currentMonth={currentMonth}

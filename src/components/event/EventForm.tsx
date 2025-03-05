@@ -36,7 +36,7 @@ const EventForm: React.FC<EventFormProps> = ({
           </div>
         </div>
         
-        {/* Calendar will be inserted here in parent component */}
+        {/* Calendar moved to parent component */}
       </div>
       
       <div className="bg-white rounded-lg p-6 shadow-sm">
