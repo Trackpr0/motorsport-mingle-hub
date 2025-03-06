@@ -1,9 +1,9 @@
-
-import { User, ChevronRight, Timer } from "lucide-react";
+import { User, ChevronRight, Timer, Ticket } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PostsGrid from "./PostsGrid";
+import EventsGrid from "./EventsGrid";
 
 interface EnthusiastProfileProps {
   isLoading: boolean;
@@ -11,7 +11,7 @@ interface EnthusiastProfileProps {
   avatarUrl: string | null;
   posts: any[];
   loadingPosts: boolean;
-  isOwnProfile: boolean; // Added this prop to match what's being passed in Profile.tsx
+  isOwnProfile: boolean;
 }
 
 const EnthusiastProfile = ({ 
@@ -84,6 +84,12 @@ const EnthusiastProfile = ({
             <User className="w-5 h-5" />
           </TabsTrigger>
           <TabsTrigger 
+            value="tickets" 
+            className="flex-1 data-[state=active]:bg-gray-100 transition-colors text-black"
+          >
+            <Ticket className="w-5 h-5" />
+          </TabsTrigger>
+          <TabsTrigger 
             value="laptimes" 
             className="flex-1 data-[state=active]:bg-gray-100 transition-colors text-black"
           >
@@ -92,6 +98,12 @@ const EnthusiastProfile = ({
         </TabsList>
         <TabsContent value="posts" className="max-w-md mx-auto">
           <PostsGrid posts={posts} loading={loadingPosts} />
+        </TabsContent>
+        <TabsContent value="tickets" className="max-w-md mx-auto">
+          <div className="flex flex-col items-center justify-center h-48 gap-4">
+            <Ticket className="w-12 h-12 text-gray-400" />
+            <p className="text-gray-500">No tickets purchased yet</p>
+          </div>
         </TabsContent>
         <TabsContent value="laptimes" className="max-w-md mx-auto p-4">
           <div className="flex flex-col items-center justify-center h-48 gap-4">

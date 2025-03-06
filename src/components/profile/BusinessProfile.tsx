@@ -1,5 +1,5 @@
 
-import { User, ChevronRight, Timer, CreditCard } from "lucide-react";
+import { User, ChevronRight, Timer, CreditCard, Ticket } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -140,6 +140,12 @@ const BusinessProfile = ({
             <User className="w-5 h-5" />
           </TabsTrigger>
           <TabsTrigger 
+            value="tickets" 
+            className="flex-1 data-[state=active]:bg-gray-100 transition-colors text-black"
+          >
+            <Ticket className="w-5 h-5" />
+          </TabsTrigger>
+          <TabsTrigger 
             value="events" 
             className="flex-1 data-[state=active]:bg-gray-100 transition-colors text-black"
           >
@@ -148,6 +154,9 @@ const BusinessProfile = ({
         </TabsList>
         <TabsContent value="posts" className="max-w-md mx-auto">
           <PostsGrid posts={posts} loading={loadingPosts} />
+        </TabsContent>
+        <TabsContent value="tickets" className="max-w-md mx-auto">
+          <EventsGrid events={events} loading={loadingPosts} />
         </TabsContent>
         <TabsContent value="events" className="max-w-md mx-auto">
           {events.length > 0 ? (
