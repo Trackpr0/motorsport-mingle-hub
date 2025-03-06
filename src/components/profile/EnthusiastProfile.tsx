@@ -113,6 +113,7 @@ const EnthusiastProfile = ({
                 +
               </Button>
             )}
+            <p className="text-gray-500">No laptimes recorded yet</p>
           </div>
         </TabsContent>
       </Tabs>

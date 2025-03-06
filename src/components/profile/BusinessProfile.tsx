@@ -1,4 +1,3 @@
-
 import { User, ChevronRight, Timer, CreditCard, Ticket } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -146,7 +145,7 @@ const BusinessProfile = ({
             <Ticket className="w-5 h-5" />
           </TabsTrigger>
           <TabsTrigger 
-            value="events" 
+            value="laptimes" 
             className="flex-1 data-[state=active]:bg-gray-100 transition-colors text-black"
           >
             <Timer className="w-5 h-5" />
@@ -158,24 +157,16 @@ const BusinessProfile = ({
         <TabsContent value="tickets" className="max-w-md mx-auto">
           <EventsGrid events={events} loading={loadingPosts} />
         </TabsContent>
-        <TabsContent value="events" className="max-w-md mx-auto">
-          {events.length > 0 ? (
-            <EventsGrid events={events} loading={loadingPosts} />
-          ) : (
-            <div className="flex flex-col items-center justify-center h-48 gap-4">
-              <Timer className="w-12 h-12 text-gray-400" />
-              {isOwnProfile && (
-                <Button 
-                  size="lg" 
-                  className="rounded-full bg-blue-600 hover:bg-blue-700"
-                  onClick={handleCreateEventClick}
-                >
-                  +
-                </Button>
-              )}
-              <p className="text-gray-500">No events yet</p>
-            </div>
-          )}
+        <TabsContent value="laptimes" className="max-w-md mx-auto p-4">
+          <div className="flex flex-col items-center justify-center h-48 gap-4">
+            <Timer className="w-12 h-12 text-gray-400" />
+            {isOwnProfile && (
+              <Button size="lg" className="rounded-full bg-blue-600 hover:bg-blue-700">
+                +
+              </Button>
+            )}
+            <p className="text-gray-500">No laptimes recorded yet</p>
+          </div>
         </TabsContent>
       </Tabs>
     </>
