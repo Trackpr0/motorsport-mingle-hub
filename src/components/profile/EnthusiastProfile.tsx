@@ -1,9 +1,9 @@
+
 import { User, ChevronRight, Timer, Ticket } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PostsGrid from "./PostsGrid";
-import EventsGrid from "./EventsGrid";
 
 interface EnthusiastProfileProps {
   isLoading: boolean;
